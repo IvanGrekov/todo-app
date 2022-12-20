@@ -9,7 +9,7 @@
         "lint": "eslint . --ignore-path .gitignore",
         "lint:fix": "eslint . --ignore-path .gitignore --fix",
         "unused-exports": "ts-unused-exports ./tsconfig.json",
-        "fix-code-style": "npm run format && npm run lint && npm run unused-exports",
+        "fix-code-style": "npm run format && npm run lint",
         "prepare": "husky install"
     },
     "dependencies": {

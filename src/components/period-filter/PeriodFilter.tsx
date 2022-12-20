@@ -28,7 +28,7 @@ export default function PeriodFilter(): JSX.Element {
                     <li key={value}>
                         <Button
                             text={title}
-                            isActive={isActive}
+                            variant={isActive ? 'contained' : 'outlined'}
                             onClick={(): void => onChangePeriod(value)}
                         />
                     </li>

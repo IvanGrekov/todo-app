@@ -10,16 +10,25 @@ interface ITypographyProps {
     children: ReactNode;
     element?: TTypographyElements;
     variant?: TTypographyVariants;
+    textAlign?: 'center' | 'inherit' | 'justify' | 'left' | 'right';
+    lineHeight?: number | 'normal';
 }
 
 export default function Typography({
+    children,
     element = 'p',
     variant = 'body1',
-    children,
+    textAlign = 'inherit',
+    lineHeight = 'normal',
 }: ITypographyProps): JSX.Element {
     const Element = element;
 
     return (
-        <Element className={classNames('typography', `typography--${variant}`)}>{children}</Element>
+        <Element
+            className={classNames('typography', `typography--${variant}`)}
+            style={{ textAlign, lineHeight }}
+        >
+            {children}
+        </Element>
     );
 }

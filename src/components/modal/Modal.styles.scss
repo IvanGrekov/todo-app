@@ -1,4 +1,4 @@
-$base-transition-duration: 250ms;
+$base-transition-duration: 225ms;
 
 .modal {
     position: fixed;
@@ -7,19 +7,15 @@ $base-transition-duration: 250ms;
     z-index: 1;
     width: 100vw;
     height: 0;
-    transition: height 0s linear $base-transition-duration;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-    &__backdrop {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        background: linear-gradient(75deg, rgba(22, 28, 36, 0.48) 0%, rgb(22, 28, 36) 100%);
-        opacity: 0;
-        transition: opacity $base-transition-duration cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-    }
+    background: linear-gradient(75deg, rgba(22, 28, 36, 0.48) 0%, rgb(22, 28, 36) 100%);
+    opacity: 0;
+    overflow: hidden;
+    transition: opacity $base-transition-duration linear 0s,
+        height 0s linear $base-transition-duration;
 
     &__content {
         max-width: 70vw;
@@ -33,10 +29,8 @@ $base-transition-duration: 250ms;
 
     &--open {
         height: 100vh;
-        transition: none;
-
-        .modal__backdrop {
-            opacity: 1;
-        }
+        opacity: 1;
+        transition: opacity $base-transition-duration linear $base-transition-duration,
+            height 0s linear 0s;
     }
 }

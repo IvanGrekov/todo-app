@@ -1,6 +1,6 @@
 export enum EScreenSizeNames {
-    SM = 'sm',
-    MD = 'md',
-    LG = 'lg',
-    XL = 'xl',
+    SM = 'SM',
+    MD = 'MD',
+    LG = 'LG',
+    XL = 'XL',
 }

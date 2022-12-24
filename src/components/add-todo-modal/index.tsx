@@ -13,7 +13,7 @@ interface IAddTodoModalProps {
 
 export default function AddTodoModal({ isOpen, onClose }: IAddTodoModalProps): JSX.Element {
     const [isFormDirty, setIsFormDirty] = useState(false);
-    const [isCloseConfirmationModalOpen, setIsCloseConfirmationModalOpen] = useState(false);
+    const [isCloseConfirmationModalOpen, setIsCloseConfirmationModalOpen] = useState(true);
 
     const onCloseModal = (): void => {
         if (isFormDirty) {

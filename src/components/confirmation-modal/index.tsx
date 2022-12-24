@@ -21,7 +21,7 @@ export default function ConfirmationModal({
     cancelText = 'Cancel',
 }: IConfirmationModalProps): JSX.Element {
     return (
-        <Modal isOpen={isOpen} onClose={onCancel} style={{ maxWidth: '20vw', minWidth: 320 }}>
+        <Modal isOpen={isOpen} onClose={onCancel} style={{ maxWidth: '20vw' }}>
             <Typography element="h3" variant="subtitle1">
                 {descriptionText}
             </Typography>

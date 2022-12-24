@@ -15,7 +15,7 @@ export default function ButtonGroup({
 }: IButtonGroupProps): JSX.Element {
     return (
         <>
-            {shouldAddTopSpacing && <Spacing sm={24} md={32} />}
+            {shouldAddTopSpacing && <Spacing sm={52} />}
 
             <div className="button-group">{children}</div>
         </>

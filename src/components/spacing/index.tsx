@@ -8,7 +8,12 @@ interface ISpacingProps {
     xl?: number;
 }
 
-export default function Spacing({ sm, md = sm, lg = sm, xl = sm }: ISpacingProps): JSX.Element {
+export default function Spacing({
+    sm,
+    md = sm,
+    lg = md || sm,
+    xl = lg || md || sm,
+}: ISpacingProps): JSX.Element {
     const windowSize = useWindowSize();
     let spacingSize;
 

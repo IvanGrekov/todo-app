@@ -1,4 +1,4 @@
-import { ReactNode, useEffect } from 'react';
+import { ReactNode, CSSProperties, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
 import classNames from 'classnames';
@@ -11,9 +11,10 @@ interface IModalProps {
     isOpen: boolean;
     onClose: () => void;
     children: ReactNode;
+    style?: CSSProperties;
 }
 
-export default function Modal({ isOpen, children, onClose }: IModalProps): JSX.Element {
+export default function Modal({ isOpen, children, onClose, style }: IModalProps): JSX.Element {
     useEffect(() => {
         const onEscapeKeyDown = (event: KeyboardEvent): void => {
             if (event.code === 'Escape') {
@@ -35,6 +36,7 @@ export default function Modal({ isOpen, children, onClose }: IModalProps): JSX.E
                 onClick={(event): void => {
                     event.stopPropagation();
                 }}
+                style={style}
             >
                 {children}
             </div>

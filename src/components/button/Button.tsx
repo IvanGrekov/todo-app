@@ -7,7 +7,9 @@ import 'components/button/Button.styles.scss';
 
 interface IButtonProps {
     text: string;
-    onClick: () => void;
+    onClick?: () => void;
+    type?: 'button' | 'submit';
+    form?: string;
     variant?: 'outlined' | 'contained';
     isBig?: boolean;
     textVariant?: TTypographyVariants;
@@ -19,6 +21,8 @@ interface IButtonProps {
 export default function Button({
     text,
     onClick,
+    type = 'button',
+    form,
     variant = 'outlined',
     isBig,
     textVariant = 'button',
@@ -28,11 +32,13 @@ export default function Button({
 }: IButtonProps): JSX.Element {
     return (
         <button
+            type={type}
+            form={form}
             title={title}
             onClick={onClick}
             className={classNames('button', `button--${variant}`, { ['button--big']: isBig })}
         >
-            <Typography element="span" variant={textVariant} lineHeight={1}>
+            <Typography element="span" variant={textVariant} style={{ lineHeight: 1 }}>
                 {text}
             </Typography>
             {iconName && (

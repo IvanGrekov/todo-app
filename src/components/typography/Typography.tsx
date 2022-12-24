@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, CSSProperties } from 'react';
 
 import classNames from 'classnames';
 
@@ -10,24 +10,19 @@ interface ITypographyProps {
     children: ReactNode;
     element?: TTypographyElements;
     variant?: TTypographyVariants;
-    textAlign?: 'center' | 'inherit' | 'justify' | 'left' | 'right';
-    lineHeight?: number | 'normal';
+    style?: CSSProperties;
 }
 
 export default function Typography({
     children,
     element = 'p',
     variant = 'body1',
-    textAlign = 'inherit',
-    lineHeight = 'normal',
+    style,
 }: ITypographyProps): JSX.Element {
     const Element = element;
 
     return (
-        <Element
-            className={classNames('typography', `typography--${variant}`)}
-            style={{ textAlign, lineHeight }}
-        >
+        <Element className={classNames('typography', `typography--${variant}`)} style={style}>
             {children}
         </Element>
     );

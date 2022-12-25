@@ -5,6 +5,7 @@ import Button from 'components/button';
 import ButtonGroup from 'components/button-group';
 import ConfirmationModal from 'components/confirmation-modal';
 import Modal from 'components/modal';
+import { TCreateTodoInput } from 'models/types/todo';
 
 interface IAddTodoModalProps {
     isOpen: boolean;
@@ -13,7 +14,11 @@ interface IAddTodoModalProps {
 
 export default function AddTodoModal({ isOpen, onClose }: IAddTodoModalProps): JSX.Element {
     const [isFormDirty, setIsFormDirty] = useState(false);
-    const [isCloseConfirmationModalOpen, setIsCloseConfirmationModalOpen] = useState(true);
+    const [isCloseConfirmationModalOpen, setIsCloseConfirmationModalOpen] = useState(false);
+
+    const onSubmit = (values: TCreateTodoInput): void => {
+        console.log(values);
+    };
 
     const onCloseModal = (): void => {
         if (isFormDirty) {
@@ -36,12 +41,7 @@ export default function AddTodoModal({ isOpen, onClose }: IAddTodoModalProps): J
     return (
         <>
             <Modal isOpen={isOpen} onClose={onCloseModal}>
-                <AddTodoForm
-                    onSubmit={(...args): void => {
-                        console.log(args);
-                    }}
-                    setIsFormDirty={setIsFormDirty}
-                />
+                <AddTodoForm onSubmit={onSubmit} setIsFormDirty={setIsFormDirty} />
 
                 <ButtonGroup shouldAddTopSpacing={true}>
                     <Button text="Cancel" onClick={onCloseModal} />

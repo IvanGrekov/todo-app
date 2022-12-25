@@ -1,4 +1,4 @@
-import { EScreenSizeNames } from 'types/screenSizes';
+import { EScreenSizeNames } from 'models/types/screenSizes';
 
 // NOTE: should be synchronized with styles/_variables.scss
 export const SCREEN_SIZE_NUMBERS = {

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 import { SCREEN_SIZE_NUMBERS } from 'constants/screenSizes';
-import { EScreenSizeNames } from 'types/screenSizes';
+import { EScreenSizeNames } from 'models/types/screenSizes';
 
 export default function useWindowSize(): EScreenSizeNames {
     const [screenSize, setScreenSize] = useState(window.innerWidth);

@@ -1,11 +1,16 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
 import AddTodoForm, { FORM_ID } from 'components/add-todo-form';
 import Button from 'components/button';
 import ButtonGroup from 'components/button-group';
 import ConfirmationModal from 'components/confirmation-modal';
 import Modal from 'components/modal';
+import { MAX_TODO_TITLE_LENGTH, INITIAL_ADD_TODO_FORM_VALUES } from 'constants/todo';
 import { TCreateTodoInput } from 'models/types/todo';
+import { formatDate } from 'utils/date.utils';
 
 interface IAddTodoModalProps {
     isOpen: boolean;
@@ -20,10 +25,23 @@ export default function AddTodoModal({ isOpen, onClose }: IAddTodoModalProps): J
         console.log(values);
     };
 
+    const formik = useFormik({
+        initialValues: INITIAL_ADD_TODO_FORM_VALUES,
+        onSubmit,
+        validationSchema: AddTodoFormSchema,
+    });
+
+    const { handleSubmit, handleChange, values, dirty, resetForm } = formik;
+
+    useEffect(() => {
+        setIsFormDirty(dirty);
+    }, [setIsFormDirty, dirty]);
+
     const onCloseModal = (): void => {
         if (isFormDirty) {
             setIsCloseConfirmationModalOpen(true);
         } else {
+            resetForm();
             onClose();
         }
     };
@@ -31,6 +49,7 @@ export default function AddTodoModal({ isOpen, onClose }: IAddTodoModalProps): J
     const confirmClosing = (): void => {
         setIsFormDirty(false);
         setIsCloseConfirmationModalOpen(false);
+        resetForm();
         onClose();
     };
 
@@ -41,7 +60,7 @@ export default function AddTodoModal({ isOpen, onClose }: IAddTodoModalProps): J
     return (
         <>
             <Modal isOpen={isOpen} onClose={onCloseModal}>
-                <AddTodoForm onSubmit={onSubmit} setIsFormDirty={setIsFormDirty} />
+                <AddTodoForm onSubmit={handleSubmit} handleChange={handleChange} values={values} />
 
                 <ButtonGroup shouldAddTopSpacing={true}>
                     <Button text="Cancel" onClick={onCloseModal} />
@@ -57,3 +76,15 @@ export default function AddTodoModal({ isOpen, onClose }: IAddTodoModalProps): J
         </>
     );
 }
+
+const AddTodoFormSchema = Yup.object().shape({
+    title: Yup.string()
+        .max(MAX_TODO_TITLE_LENGTH)
+        .matches(/^\S/, 'Incorrect Title')
+        .required('Title is required'),
+    userId: Yup.string(),
+    date: Yup.date()
+        .min(formatDate(), "You can't select the past date")
+        .required('Date is required'),
+    isCompleted: Yup.boolean(),
+});

@@ -3,8 +3,8 @@ export interface ITodo {
     title: string;
     userId: string;
     date: string;
-    completed: boolean;
+    isCompleted: boolean;
 }
 
 export type TCreateTodoInput = Omit<ITodo, 'id' | 'completed' | 'userId'> &
-    Partial<Pick<ITodo, 'completed' | 'userId'>>;
+    Partial<Pick<ITodo, 'isCompleted' | 'userId'>>;

@@ -37,20 +37,22 @@ export default function AddTodoModal({ isOpen, onClose }: IAddTodoModalProps): J
         setIsFormDirty(dirty);
     }, [setIsFormDirty, dirty]);
 
+    const baseOnClose = (): void => {
+        resetForm();
+        onClose();
+    };
+
     const onCloseModal = (): void => {
         if (isFormDirty) {
             setIsCloseConfirmationModalOpen(true);
         } else {
-            resetForm();
-            onClose();
+            baseOnClose();
         }
     };
 
     const confirmClosing = (): void => {
-        setIsFormDirty(false);
         setIsCloseConfirmationModalOpen(false);
-        resetForm();
-        onClose();
+        baseOnClose();
     };
 
     const cancelClosing = (): void => {

@@ -2,6 +2,7 @@ import { ReactNode, CSSProperties, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
 import classNames from 'classnames';
+import FocusTrap from 'focus-trap-react';
 
 import 'components/modal/Modal.styles.scss';
 
@@ -30,17 +31,19 @@ export default function Modal({ isOpen, children, onClose, style }: IModalProps)
     }, [onClose]);
 
     const modal = (
-        <div onClick={onClose} className={classNames('modal', { ['modal--open']: isOpen })}>
-            <div
-                className="modal__content"
-                onClick={(event): void => {
-                    event.stopPropagation();
-                }}
-                style={style}
-            >
-                {children}
+        <FocusTrap active={isOpen}>
+            <div onClick={onClose} className={classNames('modal', { ['modal--open']: isOpen })}>
+                <div
+                    className="modal__content"
+                    onClick={(event): void => {
+                        event.stopPropagation();
+                    }}
+                    style={style}
+                >
+                    {children}
+                </div>
             </div>
-        </div>
+        </FocusTrap>
     );
 
     return createPortal(modal, modalRoot);

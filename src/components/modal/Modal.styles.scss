@@ -1,5 +1,3 @@
-$base-transition-duration: 225ms;
-
 .modal {
     position: fixed;
     top: 0;
@@ -14,15 +12,15 @@ $base-transition-duration: 225ms;
     background: linear-gradient(75deg, rgba(22, 28, 36, 0.48) 0%, rgb(22, 28, 36) 100%);
     opacity: 0;
     overflow: hidden;
-    transition: opacity $base-transition-duration linear 0s,
-        height 0s linear $base-transition-duration;
+    transition: opacity var(--base-transition-duration) linear 0s,
+        height 0s linear var(--base-transition-duration);
 
     &__content {
         max-width: 70vw;
         max-height: 70vh;
         min-width: 31.25rem;
         overflow: auto;
-        padding: 1.5rem 2rem;
+        padding: 2rem;
 
         border-radius: 1rem;
         background-color: var(--white-color);
@@ -31,7 +29,7 @@ $base-transition-duration: 225ms;
     &--open {
         height: 100vh;
         opacity: 1;
-        transition: opacity $base-transition-duration linear $base-transition-duration,
+        transition: opacity var(--base-transition-duration) linear var(--base-transition-duration),
             height 0s linear 0s;
     }
 }

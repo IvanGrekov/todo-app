@@ -1,0 +1,48 @@
+.input {
+    display: block;
+    width: 100%;
+    padding: 1rem 0.875rem;
+
+    font: inherit;
+    letter-spacing: inherit;
+
+    border: 0.0625rem solid var(--primary-color-opacity);
+    border-radius: 0.5rem;
+    background: var(--white-color);
+    transition: border var(--base-transition-duration);
+
+    &:hover {
+        border-color: var(--primary-color);
+    }
+
+    &:focus {
+        border-color: var(--primary-color-dark);
+    }
+
+    &__wrapper {
+        position: relative;
+    }
+
+    &__label {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translate(0, -50%);
+        padding: 0 0.1875rem;
+
+        font-size: 1rem;
+        line-height: 1;
+
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+
+        background: var(--white-color);
+        transition: all var(--base-transition-duration);
+
+        &--lifted-up {
+            top: 0;
+            font-size: 0.75rem;
+        }
+    }
+}

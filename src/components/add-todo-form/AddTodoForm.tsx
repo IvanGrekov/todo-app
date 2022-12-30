@@ -17,7 +17,7 @@ export default function AddTodoForm({
     handleChange,
     values,
 }: IAddTodoFormProps): JSX.Element {
-    const { title, userId, date, isCompleted } = values;
+    const { title, date, isCompleted } = values;
 
     return (
         <form id={FORM_ID} onSubmit={onSubmit} className="form">
@@ -28,14 +28,6 @@ export default function AddTodoForm({
                 name="title"
                 id="add_todo-title-input"
                 placeholder="Title"
-            />
-            <Input
-                value={userId}
-                onChange={handleChange}
-                type="text"
-                name="userId"
-                id="add_todo-use_id-input"
-                placeholder="Assignee"
             />
             <Input
                 value={date}

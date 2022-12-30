@@ -84,7 +84,6 @@ const AddTodoFormSchema = Yup.object().shape({
         .max(MAX_TODO_TITLE_LENGTH)
         .matches(/^\S/, 'Incorrect Title')
         .required('Title is required'),
-    userId: Yup.string(),
     date: Yup.date()
         .min(formatDate(), "You can't select the past date")
         .required('Date is required'),

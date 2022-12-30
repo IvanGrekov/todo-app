@@ -29,9 +29,10 @@ export default function AddTodoModal({ isOpen, onClose }: IAddTodoModalProps): J
         initialValues: INITIAL_ADD_TODO_FORM_VALUES,
         onSubmit,
         validationSchema: AddTodoFormSchema,
+        enableReinitialize: true,
     });
 
-    const { handleSubmit, handleChange, values, dirty, resetForm } = formik;
+    const { handleSubmit, handleChange, setFieldValue, values, dirty, resetForm } = formik;
 
     useEffect(() => {
         setIsFormDirty(dirty);
@@ -62,7 +63,12 @@ export default function AddTodoModal({ isOpen, onClose }: IAddTodoModalProps): J
     return (
         <>
             <Modal isOpen={isOpen} onClose={onCloseModal}>
-                <AddTodoForm onSubmit={handleSubmit} handleChange={handleChange} values={values} />
+                <AddTodoForm
+                    onSubmit={handleSubmit}
+                    handleChange={handleChange}
+                    setFieldValue={setFieldValue}
+                    values={values}
+                />
 
                 <ButtonGroup shouldAddTopSpacing={true}>
                     <Button text="Cancel" onClick={onCloseModal} />

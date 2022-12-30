@@ -23,8 +23,7 @@ const TogglerWrapper = forwardRef<HTMLInputElement, TInputProps>(function Toggle
                 className="toggler__input"
             />
 
-            <button
-                type="button"
+            <div
                 className="toggler"
                 onClick={(): void => {
                     setFieldValue?.(name, !checked);
@@ -35,7 +34,7 @@ const TogglerWrapper = forwardRef<HTMLInputElement, TInputProps>(function Toggle
                         ['toggler__circle--checked']: checked,
                     })}
                 />
-            </button>
+            </div>
 
             {!!placeholder && !!id && (
                 <label htmlFor={id} className="toggler__label">

@@ -7,5 +7,4 @@ export const INITIAL_ADD_TODO_FORM_VALUES: TCreateTodoInput = {
     title: '',
     date: formatDate(),
     isCompleted: false,
-    userId: '',
 };

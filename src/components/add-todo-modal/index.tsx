@@ -9,6 +9,8 @@ import ButtonGroup from 'components/button-group';
 import ConfirmationModal from 'components/confirmation-modal';
 import Modal from 'components/modal';
 import { MAX_TODO_TITLE_LENGTH, INITIAL_ADD_TODO_FORM_VALUES } from 'constants/todo';
+import { useHandleNetworkError } from 'hooks/networkErrors.hooks';
+import { useApi } from 'hooks/todoApi.hooks';
 import { TCreateTodoInput } from 'models/types/todo';
 import { formatDate } from 'utils/date.utils';
 
@@ -18,11 +20,14 @@ interface IAddTodoModalProps {
 }
 
 export default function AddTodoModal({ isOpen, onClose }: IAddTodoModalProps): JSX.Element {
+    const [createTodo, { error }] = useApi({ method: 'post' });
     const [isFormDirty, setIsFormDirty] = useState(false);
     const [isCloseConfirmationModalOpen, setIsCloseConfirmationModalOpen] = useState(false);
 
+    useHandleNetworkError(error);
+
     const onSubmit = (values: TCreateTodoInput): void => {
-        console.log(values);
+        createTodo(values);
     };
 
     const formik = useFormik({

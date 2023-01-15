@@ -3,6 +3,7 @@ import Header from 'components/header';
 import NetworkErrors from 'components/network-errors';
 import PeriodFilter from 'components/period-filter';
 import Spacing from 'components/spacing';
+import TodoList from 'components/todo-list';
 import { useNetworkErrors } from 'hooks/networkErrors.hooks';
 import NetworkErrorsContext from 'models/contexts/networkErrors';
 
@@ -19,7 +20,7 @@ export default function App(): JSX.Element {
                     <Header />
                     <Spacing sm={40} xl={60} />
                     <PeriodFilter />
-                    <section />
+                    <TodoList />
                 </NetworkErrorsContext.Provider>
             </ErrorBoundary>
         </main>

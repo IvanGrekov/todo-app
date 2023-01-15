@@ -1,8 +1,11 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
+
+import { AxiosError } from 'axios';
 
 import API from 'models/api';
 
-type TUseApiCall = (data: any) => void;
+type TUseApiCall = (userData?: any) => void;
+
 interface IUseApiResult {
     isLoading: boolean;
     isCalled: boolean;
@@ -20,26 +23,28 @@ export const useApi: TUseApi = (config) => {
     const { method = 'get', todoId } = config || {};
 
     const [isLoading, setIsLoading] = useState(true);
-    const [isCalled, setIsCalled] = useState(true);
-    const [error, setError] = useState(null);
-    const [data] = useState(null);
+    const [isCalled, setIsCalled] = useState(false);
+    const [error, setError] = useState<null | AxiosError>(null);
+    const [data, setData] = useState(null);
 
-    const call: TUseApiCall = (data) => {
-        setIsLoading(true);
-        setIsCalled(true);
+    const call: TUseApiCall = useCallback(
+        (userData) => {
+            setIsLoading(true);
+            setIsCalled(true);
 
-        API[method](todoId ? `:${todoId}` : '', data)
-            .then((data) => {
-                console.log('data', data);
-                // setData(data);
-            })
-            .catch((error) => {
-                setError(error);
-            })
-            .finally(() => {
-                setIsLoading(false);
-            });
-    };
+            API[method](todoId ? `:${todoId}` : '', userData)
+                .then((res) => {
+                    setData(res.data);
+                })
+                .catch((error) => {
+                    setError(error);
+                })
+                .finally(() => {
+                    setIsLoading(false);
+                });
+        },
+        [method, todoId],
+    );
 
     const result = {
         isLoading,

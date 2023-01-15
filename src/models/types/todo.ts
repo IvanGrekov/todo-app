@@ -1,7 +1,7 @@
 export interface ITodo {
     id: string;
     title: string;
-    date: string;
+    date?: string;
     isCompleted: boolean;
 }
 

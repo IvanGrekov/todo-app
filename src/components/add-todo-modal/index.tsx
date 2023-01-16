@@ -20,11 +20,8 @@ interface IAddTodoModalProps {
 }
 
 export default function AddTodoModal({ isOpen, onClose }: IAddTodoModalProps): JSX.Element {
-    const [createTodo, { error }] = useApi({ method: 'post' });
     const [isFormDirty, setIsFormDirty] = useState(false);
     const [isCloseConfirmationModalOpen, setIsCloseConfirmationModalOpen] = useState(false);
-
-    useHandleNetworkError(error);
 
     const onSubmit = (values: TCreateTodoInput): void => {
         createTodo(values);
@@ -39,14 +36,18 @@ export default function AddTodoModal({ isOpen, onClose }: IAddTodoModalProps): J
 
     const { handleSubmit, handleChange, setFieldValue, values, dirty, resetForm } = formik;
 
-    useEffect(() => {
-        setIsFormDirty(dirty);
-    }, [setIsFormDirty, dirty]);
-
     const baseOnClose = (): void => {
         resetForm();
         onClose();
     };
+
+    const [createTodo, { error }] = useApi({ method: 'post', onCompleted: baseOnClose });
+
+    useHandleNetworkError(error);
+
+    useEffect(() => {
+        setIsFormDirty(dirty);
+    }, [setIsFormDirty, dirty]);
 
     const onCloseModal = (): void => {
         if (isFormDirty) {

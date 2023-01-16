@@ -16,6 +16,7 @@ interface IButtonProps {
     title?: string;
     iconName?: EIconNames;
     iconColor?: string;
+    disabled?: boolean;
 }
 
 export default function Button({
@@ -29,12 +30,14 @@ export default function Button({
     title,
     iconName,
     iconColor,
+    disabled,
 }: IButtonProps): JSX.Element {
     return (
         <button
             type={type}
             form={form}
             title={title}
+            disabled={disabled}
             onClick={onClick}
             className={classNames('button', `button--${variant}`, { ['button--big']: isBig })}
         >

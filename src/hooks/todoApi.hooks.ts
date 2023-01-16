@@ -17,10 +17,11 @@ type TUseApiResult = [call: TUseApiCall, result: IUseApiResult];
 type TUseApi = (config?: {
     method?: 'get' | 'post' | 'patch' | 'put' | 'delete';
     todoId?: string;
+    onCompleted?: () => void;
 }) => TUseApiResult;
 
 export const useApi: TUseApi = (config) => {
-    const { method = 'get', todoId } = config || {};
+    const { method = 'get', todoId, onCompleted } = config || {};
 
     const [isLoading, setIsLoading] = useState(true);
     const [isCalled, setIsCalled] = useState(false);
@@ -34,7 +35,9 @@ export const useApi: TUseApi = (config) => {
 
             API[method](todoId ? `:${todoId}` : '', userData)
                 .then((res) => {
+                    console.log(res.data);
                     setData(res.data);
+                    onCompleted?.();
                 })
                 .catch((error) => {
                     setError(error);
@@ -43,7 +46,7 @@ export const useApi: TUseApi = (config) => {
                     setIsLoading(false);
                 });
         },
-        [method, todoId],
+        [method, todoId, onCompleted],
     );
 
     const result = {

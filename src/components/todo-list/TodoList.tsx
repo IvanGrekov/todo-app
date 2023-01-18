@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 
+import DeleteTodoButton from 'components/delete-todo-button';
 import { useApi } from 'hooks/todoApi.hooks';
 import { ITodo } from 'models/types/todo';
 
@@ -28,9 +29,10 @@ export default function TodoList(): JSX.Element {
 
     return (
         <ul>
-            {data.map((todo: ITodo) => (
-                <li key={todo.id}>
-                    {todo.title} - {todo.isCompleted ? 'Completed' : 'Not Completed'}
+            {data.map(({ id, title, isCompleted }: ITodo) => (
+                <li key={id}>
+                    {title} - {isCompleted ? 'Completed' : 'Not Completed'}
+                    <DeleteTodoButton todoId={id} todoTitle={title} />
                 </li>
             ))}
         </ul>

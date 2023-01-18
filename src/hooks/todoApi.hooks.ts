@@ -3,6 +3,7 @@ import { useState, useCallback } from 'react';
 import { AxiosError } from 'axios';
 
 import API from 'models/api';
+import { ITodo } from 'models/types/todo';
 
 type TUseApiCall = (userData?: any) => void;
 
@@ -16,7 +17,7 @@ type TUseApiResult = [call: TUseApiCall, result: IUseApiResult];
 
 type TUseApi = (config?: {
     method?: 'get' | 'post' | 'patch' | 'put' | 'delete';
-    todoId?: string;
+    todoId?: ITodo['id'];
     onCompleted?: () => void;
 }) => TUseApiResult;
 
@@ -33,7 +34,9 @@ export const useApi: TUseApi = (config) => {
             setIsLoading(true);
             setIsCalled(true);
 
-            API[method](todoId ? `:${todoId}` : '', userData)
+            const requestParams = todoId ? `${todoId}` : '';
+
+            API[method](requestParams, userData)
                 .then((res) => {
                     console.log(res.data);
                     setData(res.data);

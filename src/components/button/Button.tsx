@@ -16,7 +16,7 @@ interface IButtonProps {
     title?: string;
     iconName?: EIconNames;
     iconColor?: string;
-    disabled?: boolean;
+    isDisabled?: boolean;
 }
 
 export default function Button({
@@ -30,16 +30,19 @@ export default function Button({
     title,
     iconName,
     iconColor,
-    disabled,
+    isDisabled,
 }: IButtonProps): JSX.Element {
     return (
         <button
             type={type}
             form={form}
             title={title}
-            disabled={disabled}
+            disabled={isDisabled}
             onClick={onClick}
-            className={classNames('button', `button--${variant}`, { ['button--big']: isBig })}
+            className={classNames('button', `button--${variant}`, {
+                ['button--big']: isBig,
+                ['button--disabled']: isDisabled,
+            })}
         >
             <Typography element="span" variant={textVariant} style={{ lineHeight: 1 }}>
                 {text}

@@ -21,11 +21,11 @@
     }
 
     &--contained {
-        background: var(--primary-color);
+        background-color: var(--primary-color);
 
         &:hover {
             border-color: var(--hover-color);
-            background: var(--hover-color);
+            background-color: var(--hover-color);
         }
     }
 
@@ -37,6 +37,14 @@
     &:focus {
         outline: none;
         border-color: var(--primary-color-dark);
+    }
+
+    &--disabled,
+    &--disabled:hover {
+        color: var(--disabled-color-secondary);
+        border-color: var(--disabled-color-secondary);
+        background-color: var(--disabled-color);
+        cursor: not-allowed;
     }
 }
 

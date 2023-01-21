@@ -8,7 +8,7 @@ import Typography from 'components/typography';
 import 'components/toggler/Toggler.styles.scss';
 
 const TogglerWrapper = forwardRef<HTMLInputElement, TInputProps>(function Toggler(
-    { checked, onChange, setFieldValue, name, id, placeholder },
+    { checked, onChange, setFieldValue, onBlur, name, id, placeholder },
     ref,
 ): JSX.Element {
     return (
@@ -17,6 +17,7 @@ const TogglerWrapper = forwardRef<HTMLInputElement, TInputProps>(function Toggle
                 ref={ref}
                 checked={checked}
                 onChange={onChange}
+                onBlur={onBlur}
                 type="checkbox"
                 name={name}
                 id={id}

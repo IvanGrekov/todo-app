@@ -20,6 +20,7 @@ export default function Input({
     value,
     onChange,
     setFieldValue,
+    onBlur,
     type,
     name,
     id,
@@ -52,6 +53,7 @@ export default function Input({
                 checked={checked}
                 onChange={onChange}
                 setFieldValue={setFieldValue}
+                onBlur={onBlur}
                 name={name}
                 id={id}
                 placeholder={placeholder}
@@ -76,6 +78,7 @@ export default function Input({
                 ref={inputRef}
                 value={value}
                 onChange={onChange}
+                onBlur={onBlur}
                 type={type}
                 name={name}
                 id={id}

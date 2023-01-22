@@ -20,6 +20,7 @@ export default function App(): JSX.Element {
                     <Header />
                     <Spacing sm={40} xl={60} />
                     <PeriodFilter />
+                    <Spacing sm={60} xl={80} />
                     <TodoList />
                 </NetworkErrorsContext.Provider>
             </ErrorBoundary>

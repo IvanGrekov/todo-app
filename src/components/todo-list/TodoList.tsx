@@ -36,15 +36,6 @@ export default function TodoList(): JSX.Element {
         );
     }
 
-    <ul>
-        {data.map(({ id, title, isCompleted }: ITodo) => (
-            <li key={id}>
-                {title} - {isCompleted ? 'Completed' : 'Not Completed'}
-                <DeleteTodoButton todoId={id} todoTitle={title} />
-            </li>
-        ))}
-    </ul>;
-
     return (
         <ul>
             {data.map(({ id, title, isCompleted }: ITodo) => (

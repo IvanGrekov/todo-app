@@ -5,7 +5,6 @@ import Button from 'components/button';
 import ButtonGroup from 'components/button-group';
 import ConfirmationModal from 'components/confirmation-modal';
 import Modal from 'components/modal';
-import { useHandleNetworkError } from 'hooks/networkErrors.hooks';
 import { useApi } from 'hooks/todoApi.hooks';
 import { TCreateTodoInput } from 'models/types/todo';
 
@@ -18,9 +17,7 @@ export default function AddTodoModal({ isOpen, onClose }: IAddTodoModalProps): J
     const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
     const [isFormDirty, setIsFormDirty] = useState(false);
     const [isCloseConfirmationModalOpen, setIsCloseConfirmationModalOpen] = useState(false);
-    const [createTodo, { error }] = useApi({ method: 'post', onCompleted: onClose });
-
-    useHandleNetworkError(error);
+    const [createTodo] = useApi({ method: 'post', onCompleted: onClose });
 
     const onSubmit = (values: TCreateTodoInput): void => {
         createTodo(values);

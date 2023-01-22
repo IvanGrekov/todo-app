@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 
 import { AxiosError } from 'axios';
 
+import { useHandleNetworkError } from 'hooks/networkErrors.hooks';
 import API from 'models/api';
 import { ITodo } from 'models/types/todo';
 
@@ -28,6 +29,8 @@ export const useApi: TUseApi = (config) => {
     const [isCalled, setIsCalled] = useState(false);
     const [error, setError] = useState<null | AxiosError>(null);
     const [data, setData] = useState(null);
+
+    useHandleNetworkError(error);
 
     const call: TUseApiCall = useCallback(
         (userData) => {

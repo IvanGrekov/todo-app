@@ -1,0 +1,21 @@
+$side-spacing: 1.25rem;
+
+.todo-item {
+    position: relative;
+    display: flex;
+    width: 100%;
+    padding: 2rem $side-spacing 2.5rem;
+    border-radius: 0.75rem;
+    background-color: var(--primary-color-opacity);
+
+    &::before {
+        content: '';
+        position: absolute;
+        bottom: 0.75rem;
+        left: $side-spacing;
+        right: $side-spacing;
+        height: 0.125rem;
+        border-radius: 0.125rem;
+        background: linear-gradient(90deg, var(--primary-color) 0%, var(--primary-color-dark) 100%);
+    }
+}

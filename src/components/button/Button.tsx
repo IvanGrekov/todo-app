@@ -5,7 +5,7 @@ import Typography, { TTypographyVariants } from 'components/typography';
 
 import 'components/button/Button.styles.scss';
 
-interface IButtonProps {
+export interface IButtonProps {
     text: string;
     onClick?: () => void;
     type?: 'button' | 'submit';

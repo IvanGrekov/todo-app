@@ -1,7 +1,7 @@
 import { lazy, Suspense, useEffect } from 'react';
 
-import DeleteTodoButton from 'components/delete-todo-button';
 import Skeleton from 'components/skeleton';
+import TodoItem from 'components/todo-item';
 import { useApi } from 'hooks/todoApi.hooks';
 import { ITodo } from 'models/types/todo';
 
@@ -37,11 +37,10 @@ export default function TodoList(): JSX.Element {
     }
 
     return (
-        <ul>
-            {data.map(({ id, title, isCompleted }: ITodo) => (
-                <li key={id}>
-                    {title} - {isCompleted ? 'Completed' : 'Not Completed'}
-                    <DeleteTodoButton todoId={id} todoTitle={title} />
+        <ul className="todo-list">
+            {data.map((todo: ITodo, i: number) => (
+                <li key={todo.id}>
+                    <TodoItem todo={todo} index={i + 1} />
                 </li>
             ))}
         </ul>

@@ -1,0 +1,35 @@
+$border-radius: 1.25rem;
+$loader-width: 60%;
+$main-color: var(--primary-color);
+$secondary-color: var(--primary-color-dark);
+
+.skeleton {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background-color: $main-color;
+    overflow: hidden;
+    border-radius: $border-radius;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        min-width: 1.25rem;
+        width: $loader-width;
+        height: 100%;
+        background: linear-gradient(90deg, $main-color 0%, $secondary-color 50%, $main-color 100%);
+        animation: loading 1.5s infinite linear;
+        border-radius: $border-radius;
+    }
+}
+
+@keyframes loading {
+    0% {
+        left: -$loader-width;
+    }
+    100% {
+        left: calc(100% + #{$loader-width});
+    }
+}

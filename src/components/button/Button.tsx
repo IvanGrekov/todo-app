@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 
 import Icon, { EIconNames } from 'components/icon';
+import Loader from 'components/loader';
 import Typography, { TTypographyVariants } from 'components/typography';
 
 import 'components/button/Button.styles.scss';
@@ -17,6 +18,7 @@ export interface IButtonProps {
     iconName?: EIconNames;
     iconColor?: string;
     isDisabled?: boolean;
+    isLoading?: boolean;
 }
 
 export default function Button({
@@ -31,26 +33,38 @@ export default function Button({
     iconName,
     iconColor,
     isDisabled,
+    isLoading,
 }: IButtonProps): JSX.Element {
+    const isButtonDisabled = isDisabled || isLoading;
+
     return (
         <button
             type={type}
             form={form}
             title={title}
-            disabled={isDisabled}
+            disabled={isButtonDisabled}
             onClick={onClick}
             className={classNames('button', `button--${variant}`, {
                 ['button--big']: isBig,
                 ['button--disabled']: isDisabled,
+                ['button--loading']: isLoading,
             })}
         >
-            <Typography element="span" variant={textVariant} style={{ lineHeight: 1 }}>
-                {text}
-            </Typography>
-            {iconName && (
-                <span className="button__icon">
-                    <Icon name={iconName} color={iconColor} />
+            {isLoading ? (
+                <span className="button__loader">
+                    <Loader />
                 </span>
+            ) : (
+                <>
+                    <Typography element="span" variant={textVariant} style={{ lineHeight: 1 }}>
+                        {text}
+                    </Typography>
+                    {iconName && (
+                        <span className="button__icon">
+                            <Icon name={iconName} color={iconColor} />
+                        </span>
+                    )}
+                </>
             )}
         </button>
     );

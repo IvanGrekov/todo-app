@@ -8,14 +8,10 @@ $side-spacing: 1.25rem;
     border-radius: 0.75rem;
     background-color: var(--primary-color-opacity);
 
-    &::before {
-        content: '';
+    &__loading-indicator {
         position: absolute;
         bottom: 0.75rem;
         left: $side-spacing;
         right: $side-spacing;
-        height: 0.125rem;
-        border-radius: 0.125rem;
-        background: linear-gradient(90deg, var(--primary-color) 0%, var(--primary-color-dark) 100%);
     }
 }

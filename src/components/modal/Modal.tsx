@@ -4,6 +4,8 @@ import { createPortal } from 'react-dom';
 import classNames from 'classnames';
 import FocusTrap from 'focus-trap-react';
 
+import Skeleton from 'components/skeleton';
+
 import 'components/modal/Modal.styles.scss';
 
 const modalRoot = document.getElementById('modal-root') as HTMLElement;
@@ -13,9 +15,16 @@ interface IModalProps {
     onClose: () => void;
     children: ReactNode;
     style?: CSSProperties;
+    isLoading?: boolean;
 }
 
-export default function Modal({ isOpen, children, onClose, style }: IModalProps): JSX.Element {
+export default function Modal({
+    isOpen,
+    children,
+    onClose,
+    style,
+    isLoading,
+}: IModalProps): JSX.Element {
     useEffect(() => {
         const onEscapeKeyDown = (event: KeyboardEvent): void => {
             if (event.code === 'Escape') {
@@ -41,6 +50,12 @@ export default function Modal({ isOpen, children, onClose, style }: IModalProps)
                     style={style}
                 >
                     {children}
+
+                    {isLoading && (
+                        <div className="modal__loader">
+                            <Skeleton height={4} />
+                        </div>
+                    )}
                 </div>
             </div>
         </FocusTrap>

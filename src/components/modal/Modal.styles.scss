@@ -16,14 +16,23 @@
         height 0s linear var(--base-transition-duration);
 
     &__content {
+        position: relative;
         max-width: 70vw;
         max-height: 70vh;
         min-width: 31.25rem;
         overflow: auto;
-        padding: 2rem;
+        padding: 2.5rem 2rem;
 
         border-radius: 1rem;
         background-color: var(--white-color);
+    }
+
+    &__loader {
+        position: absolute;
+        top: 0;
+        bottom: auto;
+        left: 0;
+        right: 0;
     }
 
     &--open {

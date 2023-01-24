@@ -25,7 +25,7 @@ type TUseApi = (config?: {
 export const useApi: TUseApi = (config) => {
     const { method = 'get', todoId, onCompleted } = config || {};
 
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const [isCalled, setIsCalled] = useState(false);
     const [error, setError] = useState<null | AxiosError>(null);
     const [data, setData] = useState(null);

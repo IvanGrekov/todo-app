@@ -17,7 +17,7 @@ export default function AddTodoModal({ isOpen, onClose }: IAddTodoModalProps): J
     const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
     const [isFormDirty, setIsFormDirty] = useState(false);
     const [isCloseConfirmationModalOpen, setIsCloseConfirmationModalOpen] = useState(false);
-    const [createTodo] = useApi({ method: 'post', onCompleted: onClose });
+    const [createTodo, { isLoading }] = useApi({ method: 'post', onCompleted: onClose });
 
     const onSubmit = (values: TCreateTodoInput): void => {
         createTodo(values);
@@ -42,7 +42,7 @@ export default function AddTodoModal({ isOpen, onClose }: IAddTodoModalProps): J
 
     return (
         <>
-            <Modal isOpen={isOpen} onClose={onCloseModal}>
+            <Modal isOpen={isOpen} isLoading={isLoading} onClose={onCloseModal}>
                 <AddTodoForm
                     onSubmit={onSubmit}
                     setIsFormDirty={setIsFormDirty}
@@ -58,6 +58,7 @@ export default function AddTodoModal({ isOpen, onClose }: IAddTodoModalProps): J
                         text="Submit"
                         variant="contained"
                         isDisabled={isSubmitDisabled}
+                        isLoading={isLoading}
                     />
                 </ButtonGroup>
             </Modal>

@@ -1,4 +1,4 @@
-import useWindowSize from 'hooks/useWindowSize.hooks';
+import useWindowSize from 'hooks/windowSize.hooks';
 import { EScreenSizeNames } from 'models/types/screenSizes';
 
 interface ISpacingProps {

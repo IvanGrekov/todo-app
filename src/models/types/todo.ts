@@ -5,5 +5,7 @@ export interface ITodo {
     isCompleted: boolean;
 }
 
+export type TTodos = ITodo[];
+
 export type TCreateTodoInput = Omit<ITodo, 'id' | 'completed' | 'userId'> &
     Partial<Pick<ITodo, 'isCompleted'>>;

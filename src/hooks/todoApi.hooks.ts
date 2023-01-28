@@ -1,9 +1,11 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 
 import { AxiosError } from 'axios';
 
 import { useHandleNetworkError } from 'hooks/networkErrors.hooks';
+import { useAppDispatch } from 'hooks/redux.hooks';
 import API from 'models/api';
+import { updateTodos } from 'models/store/features/todos/todosSlice';
 import { ITodo } from 'models/types/todo';
 
 type TUseApiCall = (userData?: any) => void;
@@ -41,7 +43,6 @@ export const useApi: TUseApi = (config) => {
 
             API[method](requestParams, userData)
                 .then((res) => {
-                    console.log(res.data);
                     setData(res.data);
                     onCompleted?.();
                 })
@@ -63,4 +64,26 @@ export const useApi: TUseApi = (config) => {
     };
 
     return [call, result];
+};
+
+export const useLoadTodos = (): IUseApiResult => {
+    const [getTodos, { isLoading, data, error, isCalled }] = useApi();
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        getTodos();
+    }, [getTodos]);
+
+    useEffect(() => {
+        if (data) {
+            dispatch(updateTodos(data));
+        }
+    }, [data, dispatch]);
+
+    return {
+        isLoading,
+        data,
+        error,
+        isCalled,
+    };
 };

@@ -1,4 +1,6 @@
+import { IconButton } from 'components/button';
 import DeleteTodoButton from 'components/delete-todo-button';
+import { EIconNames } from 'components/icon';
 import Input from 'components/input';
 // import Skeleton from 'components/skeleton';
 import Typography from 'components/typography';
@@ -23,6 +25,8 @@ export default function TodoItem({ todo, index }: ITodoItemProps): JSX.Element {
             <Input name="todo-status-toggler" type="checkbox" checked={isCompleted} />
 
             <DeleteTodoButton todoId={id} todoTitle={title} variant="contained" />
+
+            <IconButton iconName={EIconNames.REMOVE} title="Delete Todo" />
 
             {/* <div className="todo-item__loading-indicator">
                 <Skeleton height="4px" />

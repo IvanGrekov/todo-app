@@ -1,23 +1,20 @@
 import classNames from 'classnames';
 
+import { IBaseButtonProps } from 'components/button/types';
 import Icon, { EIconNames } from 'components/icon';
 import Loader from 'components/loader';
 import Typography, { TTypographyVariants } from 'components/typography';
 
 import 'components/button/Button.styles.scss';
 
-export interface IButtonProps {
+export interface IButtonProps extends IBaseButtonProps {
     text: string;
-    onClick?: () => void;
     type?: 'button' | 'submit';
     form?: string;
     variant?: 'outlined' | 'contained';
     isBig?: boolean;
     textVariant?: TTypographyVariants;
-    title?: string;
     iconName?: EIconNames;
-    iconColor?: string;
-    isDisabled?: boolean;
     isLoading?: boolean;
 }
 

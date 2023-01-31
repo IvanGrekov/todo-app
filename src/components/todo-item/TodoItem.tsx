@@ -1,8 +1,6 @@
-import { IconButton } from 'components/button';
 import DeleteTodoButton from 'components/delete-todo-button';
 import { EIconNames } from 'components/icon';
-import Input from 'components/input';
-import Menu from 'components/menu';
+import Menu, { MenuActionItem } from 'components/menu';
 // import Skeleton from 'components/skeleton';
 import Typography from 'components/typography';
 import { COLORS } from 'constants/colors';
@@ -17,6 +15,8 @@ interface ITodoItemProps {
 
 export default function TodoItem({ todo, index }: ITodoItemProps): JSX.Element {
     const { id, title, isCompleted } = todo;
+    const toggleText = isCompleted ? 'Complete' : 'Incomplete';
+    const toggleIconName = isCompleted ? EIconNames.COMPLETE : EIconNames.INCOMPLETE;
 
     return (
         <div className="todo-item">
@@ -24,13 +24,20 @@ export default function TodoItem({ todo, index }: ITodoItemProps): JSX.Element {
 
             <Typography variant="subtitle1">{title}</Typography>
 
-            <Input name="todo-status-toggler" type="checkbox" checked={isCompleted} />
-
             <DeleteTodoButton todoId={id} todoTitle={title} variant="contained" />
 
-            <IconButton iconName={EIconNames.REMOVE} title="Delete Todo" />
-
-            <Menu iconColor={COLORS.black} />
+            <Menu iconColor={COLORS.black}>
+                <MenuActionItem
+                    text="Delete"
+                    iconName={EIconNames.REMOVE}
+                    iconColor={COLORS.black}
+                />
+                <MenuActionItem
+                    text={toggleText}
+                    iconName={toggleIconName}
+                    iconColor={COLORS.black}
+                />
+            </Menu>
 
             {/* <div className="todo-item__loading-indicator">
                 <Skeleton height="4px" />

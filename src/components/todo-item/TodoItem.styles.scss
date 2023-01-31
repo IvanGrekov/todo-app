@@ -3,6 +3,7 @@ $side-spacing: 1.25rem;
 .todo-item {
     position: relative;
     display: flex;
+    justify-content: space-between;
     width: 100%;
     padding: 2rem $side-spacing 2.5rem;
     border-radius: 0.75rem;

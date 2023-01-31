@@ -10,6 +10,7 @@ interface ITypographyProps {
     children: ReactNode;
     element?: TTypographyElements;
     variant?: TTypographyVariants;
+    color?: string;
     style?: CSSProperties;
 }
 
@@ -17,12 +18,16 @@ export default function Typography({
     children,
     element = 'p',
     variant = 'body1',
+    color = 'inherit',
     style,
 }: ITypographyProps): JSX.Element {
     const Element = element;
 
     return (
-        <Element className={classNames('typography', `typography--${variant}`)} style={style}>
+        <Element
+            className={classNames('typography', `typography--${variant}`)}
+            style={{ color, ...style }}
+        >
             {children}
         </Element>
     );

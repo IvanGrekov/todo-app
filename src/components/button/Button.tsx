@@ -13,6 +13,7 @@ export interface IButtonProps extends IBaseButtonProps {
     form?: string;
     variant?: 'outlined' | 'contained' | 'ghost';
     size?: 'small' | 'big' | 'regular';
+    textColor?: string;
     textVariant?: TTypographyVariants;
     iconName?: EIconNames;
     isLoading?: boolean;
@@ -26,6 +27,7 @@ export default function Button({
     variant = 'outlined',
     size = 'regular',
     textVariant = size === 'small' ? 'body2' : 'button',
+    textColor,
     title,
     iconName,
     iconColor,
@@ -55,10 +57,12 @@ export default function Button({
                     <Typography
                         element="span"
                         variant={textVariant}
+                        color={textColor}
                         style={{ lineHeight: 1, textTransform: 'uppercase', fontWeight: 600 }}
                     >
                         {text}
                     </Typography>
+
                     {iconName && (
                         <span className="button__icon">
                             <Icon name={iconName} color={iconColor} />

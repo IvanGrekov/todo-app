@@ -1,5 +1,5 @@
 export interface IBaseButtonProps {
-    onClick?: () => void;
+    onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
     title?: string;
     iconColor?: string;
     isDisabled?: boolean;

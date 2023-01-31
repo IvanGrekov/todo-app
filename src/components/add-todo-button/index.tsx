@@ -14,7 +14,7 @@ export default function AddTodoButton(): JSX.Element {
                 text="Add todo"
                 variant="contained"
                 textVariant="subtitle2"
-                isBig
+                size="big"
                 title="Add a new todo"
                 iconName={EIconNames.ADD}
                 iconColor={COLORS.black}

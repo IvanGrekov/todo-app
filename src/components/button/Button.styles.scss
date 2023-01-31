@@ -30,9 +30,21 @@
         }
     }
 
+    &--ghost {
+        border-color: transparent;
+
+        &:hover {
+            background-color: var(--primary-color-opacity);
+        }
+    }
+
     &--big {
         padding: 1.125rem 1.5rem;
         border-radius: 1rem;
+    }
+
+    &--small {
+        padding: 0.5rem 0.75rem;
     }
 
     &--loading {

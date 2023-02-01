@@ -1,3 +1,5 @@
+import { CSSProperties } from 'react';
+
 import classNames from 'classnames';
 
 import { IBaseButtonProps } from 'components/button/types';
@@ -17,6 +19,7 @@ export interface IButtonProps extends IBaseButtonProps {
     textVariant?: TTypographyVariants;
     iconName?: EIconNames;
     isLoading?: boolean;
+    style?: CSSProperties;
 }
 
 export default function Button({
@@ -33,6 +36,7 @@ export default function Button({
     iconColor,
     isDisabled,
     isLoading,
+    style,
 }: IButtonProps): JSX.Element {
     const isButtonDisabled = isDisabled || isLoading;
 
@@ -47,6 +51,7 @@ export default function Button({
                 ['button--disabled']: isDisabled,
                 ['button--loading']: isLoading,
             })}
+            style={style}
         >
             {isLoading ? (
                 <span className="button__loader">

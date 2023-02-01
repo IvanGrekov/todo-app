@@ -21,6 +21,10 @@ export default function MenuActionItem({
             size="small"
             iconName={iconName}
             iconColor={iconColor}
+            style={{
+                flexDirection: 'row-reverse',
+                justifyContent: 'flex-end',
+            }}
         />
     );
 }

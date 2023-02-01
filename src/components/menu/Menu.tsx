@@ -29,7 +29,7 @@ export default function Menu({ iconColor, children }: IMenuProps): JSX.Element {
                 onDeactivate: clickHandler,
             }}
         >
-            <div className="menu">
+            <div className="menu" onClick={clickHandler}>
                 <IconButton
                     iconName={EIconNames.MORE}
                     onClick={(e): void => {

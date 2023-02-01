@@ -5,7 +5,7 @@ import { AxiosError } from 'axios';
 import { useHandleNetworkError } from 'hooks/networkErrors.hooks';
 import { useAppDispatch } from 'hooks/redux.hooks';
 import API from 'models/api';
-import { updateTodos } from 'models/store/features/todos/todosSlice';
+import { updateTodos, deleteTodo, patchTodo } from 'models/store/features/todos/todosSlice';
 import { ITodo } from 'models/types/todo';
 
 type TUseApiCall = (userData?: any) => void;
@@ -86,4 +86,46 @@ export const useLoadTodos = (): IUseApiResult => {
         error,
         isCalled,
     };
+};
+
+type TUseDeleteTodo = (todoId: ITodo['id']) => [() => void, IUseApiResult];
+
+export const useDeleteTodo: TUseDeleteTodo = (todoId) => {
+    const [callDeleteTodo, queryResult] = useApi({
+        method: 'delete',
+        todoId,
+    });
+    const dispatch = useAppDispatch();
+
+    const { data } = queryResult;
+
+    useEffect(() => {
+        if (data) {
+            dispatch(deleteTodo(todoId));
+        }
+    }, [data, dispatch, todoId]);
+
+    return [callDeleteTodo, queryResult];
+};
+
+type TUsePatchTodo = (
+    todoId: ITodo['id'],
+) => [(patchingTodo: { todo: ITodo }) => void, IUseApiResult];
+
+export const usePatchTodo: TUsePatchTodo = (todoId) => {
+    const [callPatchTodo, queryResult] = useApi({
+        method: 'patch',
+        todoId,
+    });
+    const dispatch = useAppDispatch();
+
+    const { data } = queryResult;
+
+    useEffect(() => {
+        if (data) {
+            dispatch(patchTodo(data));
+        }
+    }, [data, dispatch, todoId]);
+
+    return [callPatchTodo, queryResult];
 };

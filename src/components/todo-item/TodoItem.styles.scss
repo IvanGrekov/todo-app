@@ -15,4 +15,8 @@ $side-spacing: 1.25rem;
         left: $side-spacing;
         right: $side-spacing;
     }
+
+    &__status-icon {
+        width: 3rem;
+    }
 }

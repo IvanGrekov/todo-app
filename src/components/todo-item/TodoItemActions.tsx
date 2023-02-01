@@ -3,35 +3,29 @@ import { useEffect } from 'react';
 import { EIconNames } from 'components/icon';
 import Menu, { MenuActionItem } from 'components/menu';
 import { COLORS } from 'constants/colors';
-import { useApi } from 'hooks/todoApi.hooks';
+import { useDeleteTodo, usePatchTodo } from 'hooks/todoApi.hooks';
 import { ITodo } from 'models/types/todo';
 
 interface ITodoItemActionsProps {
-    id: ITodo['id'];
-    isCompleted: ITodo['isCompleted'];
+    todo: ITodo;
     setIsLoading: (value: boolean) => void;
 }
 
 export default function TodoItemActions({
-    id,
-    isCompleted,
+    todo,
     setIsLoading,
 }: ITodoItemActionsProps): JSX.Element {
-    const [deleteTodo, { isLoading: isDeleteLoading }] = useApi({
-        method: 'delete',
-        todoId: id,
-    });
-    const [patchTodo, { isLoading: isPatchingLoading }] = useApi({
-        method: 'patch',
-        todoId: id,
-    });
+    const { id, isCompleted } = todo;
+
+    const [deleteTodo, { isLoading: isDeleteLoading }] = useDeleteTodo(id);
+    const [patchTodo, { isLoading: isPatchingLoading }] = usePatchTodo(id);
 
     useEffect(() => {
         setIsLoading(isDeleteLoading || isPatchingLoading);
     }, [setIsLoading, isDeleteLoading, isPatchingLoading]);
 
     const changeTodoStatus = (): void => {
-        patchTodo({ todo: { isCompleted: !isCompleted } });
+        patchTodo({ todo: { ...todo, isCompleted: !isCompleted } });
     };
 
     const toggleText = isCompleted ? 'Complete' : 'Incomplete';

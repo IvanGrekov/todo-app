@@ -1,9 +1,8 @@
-import DeleteTodoButton from 'components/delete-todo-button';
-import { EIconNames } from 'components/icon';
-import Menu, { MenuActionItem } from 'components/menu';
-// import Skeleton from 'components/skeleton';
+import { useState } from 'react';
+
+import Skeleton from 'components/skeleton';
+import TodoItemActions from 'components/todo-item/TodoItemActions';
 import Typography from 'components/typography';
-import { COLORS } from 'constants/colors';
 import { ITodo } from 'models/types/todo';
 
 import 'components/todo-item/TodoItem.styles.scss';
@@ -14,9 +13,9 @@ interface ITodoItemProps {
 }
 
 export default function TodoItem({ todo, index }: ITodoItemProps): JSX.Element {
+    const [isLoading, setIsLoading] = useState(false);
+
     const { id, title, isCompleted } = todo;
-    const toggleText = isCompleted ? 'Complete' : 'Incomplete';
-    const toggleIconName = isCompleted ? EIconNames.COMPLETE : EIconNames.INCOMPLETE;
 
     return (
         <div className="todo-item">
@@ -24,24 +23,13 @@ export default function TodoItem({ todo, index }: ITodoItemProps): JSX.Element {
 
             <Typography variant="subtitle1">{title}</Typography>
 
-            <DeleteTodoButton todoId={id} todoTitle={title} variant="contained" />
+            <TodoItemActions id={id} isCompleted={isCompleted} setIsLoading={setIsLoading} />
 
-            <Menu iconColor={COLORS.black}>
-                <MenuActionItem
-                    text="Delete"
-                    iconName={EIconNames.REMOVE}
-                    iconColor={COLORS.black}
-                />
-                <MenuActionItem
-                    text={toggleText}
-                    iconName={toggleIconName}
-                    iconColor={COLORS.black}
-                />
-            </Menu>
-
-            {/* <div className="todo-item__loading-indicator">
-                <Skeleton height="4px" />
-            </div> */}
+            {isLoading && (
+                <div className="todo-item__loading-indicator">
+                    <Skeleton height="4px" />
+                </div>
+            )}
         </div>
     );
 }

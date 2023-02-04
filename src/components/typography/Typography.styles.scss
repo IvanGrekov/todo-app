@@ -1,5 +1,6 @@
 .typography {
     color: inherit;
+    transition: all var(--base-transition-duration);
 
     &--h1,
     &--h2,

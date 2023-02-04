@@ -4,19 +4,27 @@ $side-spacing: 1.25rem;
     position: relative;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     width: 100%;
     padding: 2rem $side-spacing 2.5rem;
     border-radius: 0.75rem;
     background-color: var(--primary-color-opacity);
+    transition: background var(--base-transition-duration);
+
+    &--completed {
+        background-color: var(--primary-color-opacity-200);
+    }
+
+    &__title-wrapper {
+        display: flex;
+        gap: 3rem;
+        align-items: center;
+    }
 
     &__loading-indicator {
         position: absolute;
         bottom: 0.75rem;
         left: $side-spacing;
         right: $side-spacing;
-    }
-
-    &__status-icon {
-        width: 3rem;
     }
 }

@@ -10,9 +10,9 @@ export default function TodoList(): JSX.Element {
 
     return (
         <ul className="todo-list">
-            {todos.map((todo: ITodo, i: number) => (
+            {todos.map((todo: ITodo) => (
                 <li key={todo.id}>
-                    <TodoItem todo={todo} index={i + 1} />
+                    <TodoItem todo={todo} />
                 </li>
             ))}
         </ul>

@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { EIconNames } from 'components/icon';
 import Menu, { MenuActionItem } from 'components/menu';
 import { COLORS } from 'constants/colors';
-import { useDeleteTodo, usePatchTodo } from 'hooks/todoApi.hooks';
+import { useDeleteTodo } from 'hooks/todoApi.hooks';
 import { ITodo } from 'models/types/todo';
 
 interface ITodoItemActionsProps {
@@ -15,21 +15,11 @@ export default function TodoItemActions({
     todo,
     setIsLoading,
 }: ITodoItemActionsProps): JSX.Element {
-    const { id, isCompleted } = todo;
-
-    const [deleteTodo, { isLoading: isDeleteLoading }] = useDeleteTodo(id);
-    const [patchTodo, { isLoading: isPatchingLoading }] = usePatchTodo(id);
+    const [deleteTodo, { isLoading }] = useDeleteTodo(todo.id);
 
     useEffect(() => {
-        setIsLoading(isDeleteLoading || isPatchingLoading);
-    }, [setIsLoading, isDeleteLoading, isPatchingLoading]);
-
-    const changeTodoStatus = (): void => {
-        patchTodo({ todo: { ...todo, isCompleted: !isCompleted } });
-    };
-
-    const toggleText = isCompleted ? 'Complete' : 'Incomplete';
-    const toggleIconName = isCompleted ? EIconNames.COMPLETE : EIconNames.INCOMPLETE;
+        setIsLoading(isLoading);
+    }, [setIsLoading, isLoading]);
 
     return (
         <Menu iconColor={COLORS.black}>
@@ -38,12 +28,6 @@ export default function TodoItemActions({
                 iconName={EIconNames.REMOVE}
                 iconColor={COLORS.black}
                 onClick={deleteTodo}
-            />
-            <MenuActionItem
-                text={toggleText}
-                iconName={toggleIconName}
-                iconColor={COLORS.black}
-                onClick={changeTodoStatus}
             />
         </Menu>
     );

@@ -9,9 +9,11 @@ import { TMenuActionItemProps } from 'components/menu/MenuActionItem';
 
 import 'components/menu/Menu.styles.scss';
 
+type TMenuItemChild = ReactElement<TMenuActionItemProps>;
+
 interface IMenuProps {
     iconColor?: string;
-    children: ReactElement<TMenuActionItemProps>[];
+    children: TMenuItemChild | TMenuItemChild[];
 }
 
 export default function Menu({ iconColor, children }: IMenuProps): JSX.Element {

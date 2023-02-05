@@ -8,5 +8,5 @@ export enum EPeriodOptions {
     THIS_WEEK = 'this-week',
     THIS_MONTH = 'this-month',
     UPCOMING = 'upcoming',
-    PAST = 'PAST',
+    PAST = 'past',
 }

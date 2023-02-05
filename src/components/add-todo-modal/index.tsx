@@ -7,6 +7,7 @@ import ConfirmationModal from 'components/confirmation-modal';
 import Modal from 'components/modal';
 import { useApi } from 'hooks/todoApi.hooks';
 import { TCreateTodoInput } from 'models/types/todo';
+import { formatDate } from 'utils/date.utils';
 
 interface IAddTodoModalProps {
     isOpen: boolean;
@@ -20,7 +21,12 @@ export default function AddTodoModal({ isOpen, onClose }: IAddTodoModalProps): J
     const [createTodo, { isLoading }] = useApi({ method: 'post', onCompleted: onClose });
 
     const onSubmit = (values: TCreateTodoInput): void => {
-        createTodo(values);
+        const formattedDate = formatDate(values.date);
+
+        createTodo({
+            ...values,
+            date: formattedDate,
+        });
     };
 
     const onCloseModal = (): void => {

@@ -66,7 +66,8 @@ export default function AddTodoForm({
                 type="text"
                 name="title"
                 id="add_todo-title-input"
-                placeholder="Title"
+                placeholder="Enter Title"
+                label="Title"
             />
             <Input
                 value={date}

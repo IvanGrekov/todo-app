@@ -11,6 +11,10 @@
     background: var(--white-color);
     transition: border var(--base-transition-duration);
 
+    &--empty {
+        color: var(--black-color-opacity);
+    }
+
     &:hover {
         border-color: var(--primary-color);
     }

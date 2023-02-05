@@ -9,6 +9,7 @@ import 'components/input/Input.styles.scss';
 
 export type TInputProps = InputHTMLAttributes<HTMLInputElement> & {
     name: string;
+    label?: string;
     setFieldValue?: (
         field: string,
         value: any,
@@ -25,6 +26,7 @@ export default function Input({
     name,
     id,
     placeholder,
+    label,
     checked,
 }: TInputProps): JSX.Element {
     const inputRef = useRef<HTMLInputElement>(null);
@@ -62,6 +64,8 @@ export default function Input({
         );
     }
 
+    const labelValue = (isLabelLiftedUp ? label : placeholder) || placeholder;
+
     return (
         <div className="input__wrapper">
             {!!placeholder && !!id && (
@@ -69,9 +73,10 @@ export default function Input({
                     htmlFor={id}
                     className={classNames('input__label', {
                         ['input__label--lifted-up']: isLabelLiftedUp || !!value,
+                        ['input--empty']: !value,
                     })}
                 >
-                    {placeholder}
+                    {labelValue}
                 </label>
             )}
             <input

@@ -56,6 +56,7 @@ export default function AddTodoForm({
     }, [shouldReset, resetForm]);
 
     const { title, date, isCompleted } = values;
+    const { title: titleError, date: dateError } = errors;
 
     return (
         <form id={FORM_ID} onSubmit={handleSubmit} className="form">
@@ -68,6 +69,8 @@ export default function AddTodoForm({
                 id="add_todo-title-input"
                 placeholder="Enter Title"
                 label="Title"
+                isError={!!titleError}
+                helperText={titleError}
             />
             <Input
                 value={date}
@@ -77,6 +80,8 @@ export default function AddTodoForm({
                 name="date"
                 id="add_todo-date-input"
                 placeholder="Date"
+                isError={!!dateError}
+                helperText={dateError}
             />
             <Input
                 checked={isCompleted}

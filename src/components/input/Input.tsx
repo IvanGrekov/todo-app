@@ -4,12 +4,15 @@ import classNames from 'classnames';
 import { FormikErrors } from 'formik';
 
 import Toggler from 'components/toggler';
-
+import Typography from 'components/typography';
 import 'components/input/Input.styles.scss';
+import { COLORS } from 'constants/colors';
 
 export type TInputProps = InputHTMLAttributes<HTMLInputElement> & {
     name: string;
     label?: string;
+    isError?: boolean;
+    helperText?: string;
     setFieldValue?: (
         field: string,
         value: any,
@@ -28,6 +31,8 @@ export default function Input({
     placeholder,
     label,
     checked,
+    isError,
+    helperText,
 }: TInputProps): JSX.Element {
     const inputRef = useRef<HTMLInputElement>(null);
     const [isLabelLiftedUp, setIsLabelLiftedUp] = useState(false);
@@ -60,14 +65,17 @@ export default function Input({
                 id={id}
                 placeholder={placeholder}
                 className="input"
+                isError={isError}
+                helperText={helperText}
             />
         );
     }
 
-    const labelValue = (isLabelLiftedUp ? label : placeholder) || placeholder;
+    const labelValue = (!value ? placeholder : label) || placeholder;
+    const helperTextColor = isError ? COLORS.red : COLORS['black-opacity'];
 
     return (
-        <div className="input__wrapper">
+        <div className={classNames('input__wrapper', { ['input__wrapper--error']: isError })}>
             {!!placeholder && !!id && (
                 <label
                     htmlFor={id}
@@ -87,8 +95,15 @@ export default function Input({
                 type={type}
                 name={name}
                 id={id}
-                className="input"
+                className={classNames('input', { ['input--error']: isError })}
             />
+            {!!helperText && (
+                <span className="input__helper-text">
+                    <Typography element="span" variant="caption" color={helperTextColor}>
+                        {helperText}
+                    </Typography>
+                </span>
+            )}
         </div>
     );
 }

@@ -3,6 +3,10 @@ import { EPeriodOptions } from 'models/router';
 
 export const PERIOD_FILTER_ITEMS: Array<IPeriodFilter> = [
     {
+        title: 'Upcoming',
+        value: EPeriodOptions.UPCOMING,
+    },
+    {
         title: 'Today',
         value: EPeriodOptions.TODAY,
     },
@@ -19,13 +23,9 @@ export const PERIOD_FILTER_ITEMS: Array<IPeriodFilter> = [
         value: EPeriodOptions.THIS_MONTH,
     },
     {
-        title: 'Upcoming',
-        value: EPeriodOptions.UPCOMING,
-    },
-    {
         title: 'Past',
         value: EPeriodOptions.PAST,
     },
 ];
 
-export const DEFAULT_PERIOD_FILTER_VALUE = EPeriodOptions.TODAY;
+export const DEFAULT_PERIOD_FILTER_VALUE = EPeriodOptions.UPCOMING;

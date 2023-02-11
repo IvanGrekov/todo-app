@@ -20,3 +20,21 @@ export const checkIfTheSameDay = (date1: Date, date2: Date): boolean => {
 
     return isTheSameYear && isTheSameMonth && isTheSameMonthDay;
 };
+
+export const checkIfCurrentWeek = (date: Date): boolean => {
+    return moment(date).isoWeek() === moment().isoWeek();
+};
+
+export const checkIfCurrentMonth = (date: Date): boolean => {
+    return date.getMonth() === new Date().getMonth();
+};
+
+export const checkIfDateIsPast = (date: Date): boolean => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth() + 1;
+    const day = now.getDate();
+    const todayMidNigth = new Date(`${year}-${month}-${day}`);
+
+    return date < todayMidNigth;
+};

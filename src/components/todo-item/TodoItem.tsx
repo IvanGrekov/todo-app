@@ -5,7 +5,8 @@ import classNames from 'classnames';
 import Skeleton from 'components/skeleton';
 import PublishButton from 'components/todo-item/PublishButton';
 import TodoItemActions from 'components/todo-item/TodoItemActions';
-import { getShouldShowDate, getUserReadableDate } from 'components/todo-item/todoItem.utils';
+import { useShouldShowDate } from 'components/todo-item/todoItem.hooks';
+import { getUserReadableDate } from 'components/todo-item/todoItem.utils';
 import Typography from 'components/typography';
 import { COLORS } from 'constants/colors';
 import { ITodo } from 'models/types/todo';
@@ -18,11 +19,11 @@ interface ITodoItemProps {
 
 export default function TodoItem({ todo }: ITodoItemProps): JSX.Element {
     const [isLoading, setIsLoading] = useState(false);
+    const shouldShowDate = useShouldShowDate();
 
     const { title, isCompleted, date } = todo;
     const titleColor = isCompleted ? COLORS['black-opacity'] : COLORS.black;
     const dateObjectFormat = new Date(date);
-    const shouldShowDate = getShouldShowDate(dateObjectFormat);
 
     return (
         <div

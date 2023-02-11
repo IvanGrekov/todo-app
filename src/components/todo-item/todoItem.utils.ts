@@ -8,7 +8,7 @@ export const getShouldShowDate = (date: Date): boolean => {
     const isTodayDate = checkIfTheSameDay(date, todayDate);
 
     const tomorrowDate = new Date();
-    tomorrowDate.setDate(todayDate.getDate() + 1);
+    tomorrowDate.setDate(tomorrowDate.getDate() + 1);
     const isTomorrowDate = checkIfTheSameDay(date, tomorrowDate);
 
     return !isTodayDate && !isTomorrowDate;

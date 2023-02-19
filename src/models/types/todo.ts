@@ -7,5 +7,4 @@ export interface ITodo {
 
 export type TTodos = ITodo[];
 
-export type TCreateTodoInput = Omit<ITodo, 'id' | 'completed' | 'userId'> &
-    Partial<Pick<ITodo, 'isCompleted'>>;
+export type TTodoFormFields = Omit<ITodo, 'id'>;

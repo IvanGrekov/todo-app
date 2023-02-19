@@ -2,30 +2,37 @@ import { useEffect } from 'react';
 
 import { useFormik } from 'formik';
 
-import { FORM_ID, ADD_TODO_FORM_SCHEMA } from 'components/add-todo-form/constants';
 import Input from 'components/input';
-import { INITIAL_ADD_TODO_FORM_VALUES } from 'constants/todo';
-import { TCreateTodoInput } from 'models/types/todo';
+import { TODO_FORM_SCHEMA } from 'components/todo-form/constants';
+import { getFormattedDefaultValues } from 'components/todo-form/todoForm.utils';
+import { ITodo, TTodoFormFields } from 'models/types/todo';
 
-import 'components/add-todo-form/AddTodoForm.styles.scss';
+import 'components/todo-form/TodoForm.styles.scss';
 
-interface IAddTodoFormProps {
-    onSubmit: (values: TCreateTodoInput) => void;
+export type TOnSubmit = (values: TTodoFormFields) => void;
+
+interface ITodoFormProps {
+    formId: string;
+    onSubmit: TOnSubmit;
     setIsFormDirty: (newValue: boolean) => void;
     setIsSubmitDisabled: (newValue: boolean) => void;
     shouldReset: boolean;
+    defaultValues?: ITodo;
 }
 
-export default function AddTodoForm({
+export default function TodoForm({
+    formId,
     onSubmit,
     setIsFormDirty,
     setIsSubmitDisabled,
     shouldReset,
-}: IAddTodoFormProps): JSX.Element {
+    defaultValues,
+}: ITodoFormProps): JSX.Element {
+    const initialValues = getFormattedDefaultValues(defaultValues);
     const formik = useFormik({
-        initialValues: INITIAL_ADD_TODO_FORM_VALUES,
+        initialValues,
         onSubmit,
-        validationSchema: ADD_TODO_FORM_SCHEMA,
+        validationSchema: TODO_FORM_SCHEMA,
         enableReinitialize: true,
     });
 
@@ -59,7 +66,7 @@ export default function AddTodoForm({
     const { title: titleError, date: dateError } = errors;
 
     return (
-        <form id={FORM_ID} onSubmit={handleSubmit} className="form">
+        <form id={formId} onSubmit={handleSubmit} className="form">
             <Input
                 value={title}
                 onChange={handleChange}

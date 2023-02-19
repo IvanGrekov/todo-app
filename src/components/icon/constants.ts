@@ -1,5 +1,6 @@
 import AddIcon from 'components/icon/AddIcon';
 import CompleteIcon from 'components/icon/CompleteIcon';
+import EditIcon from 'components/icon/EditIcon';
 import EmptyDataIcon from 'components/icon/EmptyDataIcon';
 import ErrorIcon from 'components/icon/ErrorIcon';
 import IncompleteIcon from 'components/icon/IncompleteIcon';
@@ -15,4 +16,5 @@ export const ICON_CONFIG = {
     [EIconNames.REMOVE]: RemoveIcon,
     [EIconNames.COMPLETE]: CompleteIcon,
     [EIconNames.INCOMPLETE]: IncompleteIcon,
+    [EIconNames.EDIT]: EditIcon,
 };

@@ -27,6 +27,9 @@ export const todosSlice = createSlice({
         updateTodos: (state, action: PayloadAction<TTodos>) => {
             state.todos = sortTodos(action.payload);
         },
+        createTodo: (state, action: PayloadAction<ITodo>) => {
+            state.todos = sortTodos([...state.todos, action.payload]);
+        },
         deleteTodo: (state, action: PayloadAction<ITodo['id']>) => {
             state.todos = state.todos.filter(({ id }) => id !== action.payload);
         },
@@ -38,7 +41,7 @@ export const todosSlice = createSlice({
     },
 });
 
-export const { updateTodos, deleteTodo, patchTodo } = todosSlice.actions;
+export const { updateTodos, createTodo, deleteTodo, patchTodo } = todosSlice.actions;
 
 export const selectTodos = (state: RootState): TTodos => state.todos.todos;
 

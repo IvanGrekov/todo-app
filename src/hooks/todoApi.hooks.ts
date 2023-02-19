@@ -5,7 +5,12 @@ import { AxiosError } from 'axios';
 import { useHandleNetworkError } from 'hooks/networkErrors.hooks';
 import { useAppDispatch } from 'hooks/redux.hooks';
 import API from 'models/api';
-import { updateTodos, deleteTodo, patchTodo } from 'models/store/features/todos/todosSlice';
+import {
+    updateTodos,
+    createTodo,
+    deleteTodo,
+    patchTodo,
+} from 'models/store/features/todos/todosSlice';
 import { ITodo } from 'models/types/todo';
 
 type TUseApiCall = (userData?: any) => void;
@@ -88,6 +93,28 @@ export const useLoadTodos = (): IUseApiResult => {
     };
 };
 
+type TUseCreateTodo = (
+    onCompleted?: () => void,
+) => [(newTodo: { todo: Omit<ITodo, 'id'> }) => void, IUseApiResult];
+
+export const useCreateTodo: TUseCreateTodo = (onCompleted) => {
+    const [callCreateTodo, queryResult] = useApi({
+        method: 'post',
+        onCompleted,
+    });
+    const dispatch = useAppDispatch();
+
+    const { data } = queryResult;
+
+    useEffect(() => {
+        if (data) {
+            dispatch(createTodo(data));
+        }
+    }, [data, dispatch]);
+
+    return [callCreateTodo, queryResult];
+};
+
 type TUseDeleteTodo = (todoId: ITodo['id']) => [() => void, IUseApiResult];
 
 export const useDeleteTodo: TUseDeleteTodo = (todoId) => {
@@ -110,12 +137,14 @@ export const useDeleteTodo: TUseDeleteTodo = (todoId) => {
 
 type TUsePatchTodo = (
     todoId: ITodo['id'],
+    onCompleted?: () => void,
 ) => [(patchingTodo: { todo: ITodo }) => void, IUseApiResult];
 
-export const usePatchTodo: TUsePatchTodo = (todoId) => {
+export const usePatchTodo: TUsePatchTodo = (todoId, onCompleted) => {
     const [callPatchTodo, queryResult] = useApi({
         method: 'patch',
         todoId,
+        onCompleted,
     });
     const dispatch = useAppDispatch();
 

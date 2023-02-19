@@ -6,6 +6,7 @@ export enum EIconNames {
     REMOVE = 'remove',
     COMPLETE = 'complete',
     INCOMPLETE = 'incomplete',
+    EDIT = 'edit',
 }
 
 export interface IBaseIconProps {

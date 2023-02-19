@@ -47,7 +47,7 @@ app.get(TODOS_APP_ENDPOINTS.todoId, (req, res) => {
 
 // NOTE: create todo
 app.post(TODOS_APP_ENDPOINTS.todos, express.json(), (req, res) => {
-    const resultFromModel = todosModel.createTodo(req.body);
+    const resultFromModel = todosModel.createTodo(req.body.todo);
 
     if (!resultFromModel) {
         // NOTE: Bad request

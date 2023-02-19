@@ -10,9 +10,12 @@ import 'components/modal/Modal.styles.scss';
 
 const modalRoot = document.getElementById('modal-root') as HTMLElement;
 
-interface IModalProps {
+export interface IModalBaseProps {
     isOpen: boolean;
     onClose: () => void;
+}
+
+interface IModalProps extends IModalBaseProps {
     children: ReactNode;
     style?: CSSProperties;
     isLoading?: boolean;

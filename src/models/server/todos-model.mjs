@@ -5,13 +5,13 @@ let todos = [
         id: '1',
         title: 'HTML',
         isCompleted: false,
-        date: generateSringifiedDate('2023-02-11'),
+        date: generateSringifiedDate('2023-02-28'),
     },
     {
         id: '2',
         title: 'CSS',
         isCompleted: true,
-        date: generateSringifiedDate('2023-02-12'),
+        date: generateSringifiedDate('2023-02-28'),
     },
     {
         id: '3',
@@ -29,13 +29,13 @@ let todos = [
         id: '5',
         title: 'NODE',
         isCompleted: false,
-        date: generateSringifiedDate('2023-02-06'),
+        date: generateSringifiedDate('2023-03-01'),
     },
     {
         id: '6',
         title: 'REDUX',
         isCompleted: false,
-        date: generateSringifiedDate('2023-02-13'),
+        date: generateSringifiedDate('2023-03-20'),
     },
 ];
 

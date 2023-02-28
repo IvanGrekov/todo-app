@@ -11,7 +11,7 @@ import {
     deleteTodo,
     patchTodo,
 } from 'models/store/features/todos/todosSlice';
-import { ITodo } from 'models/types/todo';
+import { ITodo, TTodos } from 'models/types/todo';
 
 type TUseApiCall = (userData?: any) => void;
 
@@ -133,6 +133,29 @@ export const useDeleteTodo: TUseDeleteTodo = (todoId) => {
     }, [data, dispatch, todoId]);
 
     return [callDeleteTodo, queryResult];
+};
+
+type TCallUpdateTodos = (todos: TTodos) => void;
+type TUseUpdateTodos = () => [TCallUpdateTodos, IUseApiResult];
+
+export const useUpdateTodos: TUseUpdateTodos = () => {
+    const [updateTodosMutation, queryResult] = useApi({
+        method: 'put',
+    });
+    const dispatch = useAppDispatch();
+    const callUpdateTodos: TCallUpdateTodos = (todos): void => {
+        updateTodosMutation({ todos });
+    };
+
+    const { data } = queryResult;
+
+    useEffect(() => {
+        if (data) {
+            dispatch(updateTodos(data));
+        }
+    }, [data, dispatch]);
+
+    return [callUpdateTodos, queryResult];
 };
 
 type TUsePatchTodo = (

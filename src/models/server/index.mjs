@@ -214,35 +214,6 @@ app.put(TODOS_APP_ENDPOINTS.todos, express.json(), (req, res) => {
     }
 });
 
-// NOTE: remove todos
-app.delete(TODOS_APP_ENDPOINTS.todos, express.json(), (req, res) => {
-    if (!req.body.todoIds) {
-        // NOTE: Bad request
-        res.statusCode = 400;
-        res.send(getServerError('Please send todoIds for removing in format `{ todoIds: id[] }`'));
-
-        return;
-    }
-
-    if (Array.isArray(req.body.todoIds) && !req.body.todoIds.length) {
-        // NOTE: Bad request
-        res.statusCode = 400;
-        res.send(
-            getServerError('Please send a not empty array of todoIds to remove several todos'),
-        );
-
-        return;
-    }
-
-    for (const id of req.body.todoIds) {
-        todosModel.deleteTodo(id);
-    }
-
-    // NOTE: Succeeded
-    res.statusCode = 200;
-    res.send(todosModel.getTodos());
-});
-
 app.listen(PORT, () => {
     console.log(`Server is running, http://localhost:${PORT}`);
 });

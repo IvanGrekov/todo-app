@@ -7,7 +7,7 @@ import 'components/clear-completed-todos-button/ClearCompletedTodosButton.styles
 
 interface IClearCompletedTodosButtonProps {
     completedTodos: TTodos;
-    updateTodos: (updatedTodoList: TTodos) => void;
+    updateTodos: (newTodos: { todos: TTodos }) => void;
 }
 
 export default function ClearCompletedTodosButton({
@@ -17,7 +17,7 @@ export default function ClearCompletedTodosButton({
     const remainedTodos = useAppSelector((state) => selectRemainedTodos(state, completedTodos));
 
     const onClearButtonClick = (): void => {
-        updateTodos(remainedTodos);
+        updateTodos({ todos: remainedTodos });
     };
 
     return (

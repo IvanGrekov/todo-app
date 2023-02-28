@@ -29,7 +29,7 @@ type TUseApi = (config?: {
     onCompleted?: () => void;
 }) => TUseApiResult;
 
-export const useApi: TUseApi = (config) => {
+const useApi: TUseApi = (config) => {
     const { method = 'get', todoId, onCompleted } = config || {};
 
     const [isLoading, setIsLoading] = useState(false);
@@ -72,7 +72,7 @@ export const useApi: TUseApi = (config) => {
 };
 
 export const useLoadTodos = (): IUseApiResult => {
-    const [getTodos, { isLoading, data, error, isCalled }] = useApi();
+    const [getTodos, { data, ...rest }] = useApi();
     const dispatch = useAppDispatch();
 
     useEffect(() => {
@@ -86,10 +86,8 @@ export const useLoadTodos = (): IUseApiResult => {
     }, [data, dispatch]);
 
     return {
-        isLoading,
         data,
-        error,
-        isCalled,
+        ...rest,
     };
 };
 
@@ -98,7 +96,7 @@ type TUseCreateTodo = (
 ) => [(newTodo: { todo: Omit<ITodo, 'id'> }) => void, IUseApiResult];
 
 export const useCreateTodo: TUseCreateTodo = (onCompleted) => {
-    const [callCreateTodo, queryResult] = useApi({
+    const [createTodoMutation, queryResult] = useApi({
         method: 'post',
         onCompleted,
     });
@@ -112,13 +110,13 @@ export const useCreateTodo: TUseCreateTodo = (onCompleted) => {
         }
     }, [data, dispatch]);
 
-    return [callCreateTodo, queryResult];
+    return [createTodoMutation, queryResult];
 };
 
 type TUseDeleteTodo = (todoId: ITodo['id']) => [() => void, IUseApiResult];
 
 export const useDeleteTodo: TUseDeleteTodo = (todoId) => {
-    const [callDeleteTodo, queryResult] = useApi({
+    const [deleteTodoMutation, queryResult] = useApi({
         method: 'delete',
         todoId,
     });
@@ -132,10 +130,10 @@ export const useDeleteTodo: TUseDeleteTodo = (todoId) => {
         }
     }, [data, dispatch, todoId]);
 
-    return [callDeleteTodo, queryResult];
+    return [deleteTodoMutation, queryResult];
 };
 
-type TCallUpdateTodos = (todos: TTodos) => void;
+type TCallUpdateTodos = (newTodos: { todos: TTodos }) => void;
 type TUseUpdateTodos = () => [TCallUpdateTodos, IUseApiResult];
 
 export const useUpdateTodos: TUseUpdateTodos = () => {
@@ -143,9 +141,6 @@ export const useUpdateTodos: TUseUpdateTodos = () => {
         method: 'put',
     });
     const dispatch = useAppDispatch();
-    const callUpdateTodos: TCallUpdateTodos = (todos): void => {
-        updateTodosMutation({ todos });
-    };
 
     const { data } = queryResult;
 
@@ -155,7 +150,7 @@ export const useUpdateTodos: TUseUpdateTodos = () => {
         }
     }, [data, dispatch]);
 
-    return [callUpdateTodos, queryResult];
+    return [updateTodosMutation, queryResult];
 };
 
 type TUsePatchTodo = (
@@ -164,7 +159,7 @@ type TUsePatchTodo = (
 ) => [(patchingTodo: { todo: ITodo }) => void, IUseApiResult];
 
 export const usePatchTodo: TUsePatchTodo = (todoId, onCompleted) => {
-    const [callPatchTodo, queryResult] = useApi({
+    const [patchTodoMutation, queryResult] = useApi({
         method: 'patch',
         todoId,
         onCompleted,
@@ -179,5 +174,5 @@ export const usePatchTodo: TUsePatchTodo = (todoId, onCompleted) => {
         }
     }, [data, dispatch, todoId]);
 
-    return [callPatchTodo, queryResult];
+    return [patchTodoMutation, queryResult];
 };

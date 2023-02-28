@@ -5,6 +5,7 @@ import { AxiosError } from 'axios';
 import { useHandleNetworkError } from 'hooks/networkErrors.hooks';
 import { useAppDispatch } from 'hooks/redux.hooks';
 import API from 'models/api';
+import type { AppDispatch } from 'models/store';
 import {
     updateTodos,
     createTodo,
@@ -21,16 +22,17 @@ interface IUseApiResult {
     error: any;
     data: any;
 }
-type TUseApiResult = [call: TUseApiCall, result: IUseApiResult];
-
-type TUseApi = (config?: {
+type TUseApiHookResult = [call: TUseApiCall, queryResult: IUseApiResult];
+interface IUseApiInput {
     method?: 'get' | 'post' | 'patch' | 'put' | 'delete';
     todoId?: ITodo['id'];
     onCompleted?: () => void;
-}) => TUseApiResult;
+}
 
-const useApi: TUseApi = (config) => {
-    const { method = 'get', todoId, onCompleted } = config || {};
+type TUseApi = (input?: IUseApiInput) => TUseApiHookResult;
+
+const useApi: TUseApi = (input) => {
+    const { method = 'get', todoId, onCompleted } = input || {};
 
     const [isLoading, setIsLoading] = useState(false);
     const [isCalled, setIsCalled] = useState(false);
@@ -61,23 +63,42 @@ const useApi: TUseApi = (config) => {
         [method, todoId, onCompleted],
     );
 
-    const result = {
+    const queryResult = {
         isLoading,
         isCalled,
         error,
         data,
     };
 
-    return [call, result];
+    return [call, queryResult];
+};
+
+interface IUseApiActionResult {
+    call: TUseApiCall;
+    dispatch: AppDispatch;
+    queryResult: IUseApiResult;
+}
+type TUseApiAction = (config?: IUseApiInput) => IUseApiActionResult;
+
+const useApiAction: TUseApiAction = (config) => {
+    const [call, queryResult] = useApi(config);
+    const dispatch = useAppDispatch();
+
+    return {
+        call,
+        dispatch,
+        queryResult,
+    };
 };
 
 export const useLoadTodos = (): IUseApiResult => {
-    const [getTodos, { data, ...rest }] = useApi();
-    const dispatch = useAppDispatch();
+    const { call: getTodos, dispatch, queryResult } = useApiAction();
 
     useEffect(() => {
         getTodos();
     }, [getTodos]);
+
+    const { data } = queryResult;
 
     useEffect(() => {
         if (data) {
@@ -85,10 +106,7 @@ export const useLoadTodos = (): IUseApiResult => {
         }
     }, [data, dispatch]);
 
-    return {
-        data,
-        ...rest,
-    };
+    return queryResult;
 };
 
 type TUseCreateTodo = (
@@ -96,11 +114,14 @@ type TUseCreateTodo = (
 ) => [(newTodo: { todo: Omit<ITodo, 'id'> }) => void, IUseApiResult];
 
 export const useCreateTodo: TUseCreateTodo = (onCompleted) => {
-    const [createTodoMutation, queryResult] = useApi({
+    const {
+        call: createTodoMutation,
+        dispatch,
+        queryResult,
+    } = useApiAction({
         method: 'post',
         onCompleted,
     });
-    const dispatch = useAppDispatch();
 
     const { data } = queryResult;
 
@@ -116,11 +137,14 @@ export const useCreateTodo: TUseCreateTodo = (onCompleted) => {
 type TUseDeleteTodo = (todoId: ITodo['id']) => [() => void, IUseApiResult];
 
 export const useDeleteTodo: TUseDeleteTodo = (todoId) => {
-    const [deleteTodoMutation, queryResult] = useApi({
-        method: 'delete',
+    const {
+        call: deleteTodoMutation,
+        dispatch,
+        queryResult,
+    } = useApiAction({
+        method: 'post',
         todoId,
     });
-    const dispatch = useAppDispatch();
 
     const { data } = queryResult;
 
@@ -137,10 +161,13 @@ type TCallUpdateTodos = (newTodos: { todos: TTodos }) => void;
 type TUseUpdateTodos = () => [TCallUpdateTodos, IUseApiResult];
 
 export const useUpdateTodos: TUseUpdateTodos = () => {
-    const [updateTodosMutation, queryResult] = useApi({
+    const {
+        call: updateTodosMutation,
+        dispatch,
+        queryResult,
+    } = useApiAction({
         method: 'put',
     });
-    const dispatch = useAppDispatch();
 
     const { data } = queryResult;
 
@@ -159,12 +186,15 @@ type TUsePatchTodo = (
 ) => [(patchingTodo: { todo: ITodo }) => void, IUseApiResult];
 
 export const usePatchTodo: TUsePatchTodo = (todoId, onCompleted) => {
-    const [patchTodoMutation, queryResult] = useApi({
+    const {
+        call: patchTodoMutation,
+        dispatch,
+        queryResult,
+    } = useApiAction({
         method: 'patch',
         todoId,
         onCompleted,
     });
-    const dispatch = useAppDispatch();
 
     const { data } = queryResult;
 
@@ -172,7 +202,7 @@ export const usePatchTodo: TUsePatchTodo = (todoId, onCompleted) => {
         if (data) {
             dispatch(patchTodo(data));
         }
-    }, [data, dispatch, todoId]);
+    }, [data, dispatch]);
 
     return [patchTodoMutation, queryResult];
 };

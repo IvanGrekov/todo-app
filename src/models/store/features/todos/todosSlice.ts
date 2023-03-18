@@ -20,7 +20,7 @@ export const todosSlice = createSlice({
             state.todos = sortTodos(action.payload);
         },
         createTodo: (state, action: PayloadAction<ITodo>) => {
-            state.todos = sortTodos([...state.todos, action.payload]);
+            state.todos.push(action.payload);
         },
         deleteTodo: (state, action: PayloadAction<ITodo['id']>) => {
             state.todos = state.todos.filter(({ id }) => id !== action.payload);

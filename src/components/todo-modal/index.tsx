@@ -6,6 +6,7 @@ import ConfirmationModal from 'components/confirmation-modal';
 import Modal, { IModalBaseProps } from 'components/modal';
 import TodoForm, { ADD_FORM_ID, PATCH_FORM_ID, TOnSubmit } from 'components/todo-form';
 import { ITodo } from 'models/types/todo';
+import { checkIfDateIsPast } from 'utils/date.utils';
 
 interface ITodoModalProps extends IModalBaseProps {
     isLoading: boolean;
@@ -42,6 +43,9 @@ export default function TodoModal({
     };
 
     const formId = todo ? PATCH_FORM_ID : ADD_FORM_ID;
+    const shouldShowDateField = todo
+        ? !checkIfDateIsPast(new Date(todo.date)) && !todo.isCompleted
+        : true;
 
     return (
         <>
@@ -53,6 +57,7 @@ export default function TodoModal({
                     setIsSubmitDisabled={setIsSubmitDisabled}
                     shouldReset={!isOpen}
                     defaultValues={todo}
+                    shouldShowDateField={shouldShowDateField}
                 />
 
                 <ButtonGroup shouldAddTopSpacing={true}>

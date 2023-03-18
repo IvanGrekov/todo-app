@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useFormik } from 'formik';
 
 import Input from 'components/input';
-import { TODO_FORM_SCHEMA } from 'components/todo-form/constants';
+import { TODO_FORM_SCHEMA, TODO_FORM_SCHEMA_WITHOUT_DATA } from 'components/todo-form/constants';
 import { getFormattedDefaultValues } from 'components/todo-form/todoForm.utils';
 import { ITodo, TTodoFormFields } from 'models/types/todo';
 
@@ -18,6 +18,7 @@ interface ITodoFormProps {
     setIsSubmitDisabled: (newValue: boolean) => void;
     shouldReset: boolean;
     defaultValues?: ITodo;
+    shouldShowDateField?: boolean;
 }
 
 export default function TodoForm({
@@ -27,12 +28,13 @@ export default function TodoForm({
     setIsSubmitDisabled,
     shouldReset,
     defaultValues,
+    shouldShowDateField = true,
 }: ITodoFormProps): JSX.Element {
     const initialValues = getFormattedDefaultValues(defaultValues);
     const formik = useFormik({
         initialValues,
         onSubmit,
-        validationSchema: TODO_FORM_SCHEMA,
+        validationSchema: shouldShowDateField ? TODO_FORM_SCHEMA : TODO_FORM_SCHEMA_WITHOUT_DATA,
         enableReinitialize: true,
     });
 
@@ -79,17 +81,19 @@ export default function TodoForm({
                 isError={!!titleError}
                 helperText={titleError}
             />
-            <Input
-                value={date}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                type="date"
-                name="date"
-                id="add_todo-date-input"
-                placeholder="Date"
-                isError={!!dateError}
-                helperText={dateError}
-            />
+            {shouldShowDateField && (
+                <Input
+                    value={date}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    type="date"
+                    name="date"
+                    id="add_todo-date-input"
+                    placeholder="Date"
+                    isError={!!dateError}
+                    helperText={dateError}
+                />
+            )}
             <Input
                 checked={isCompleted}
                 onChange={handleChange}

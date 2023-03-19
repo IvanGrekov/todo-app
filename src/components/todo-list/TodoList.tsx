@@ -22,7 +22,7 @@ export default function TodoList(): JSX.Element {
     const periodFilter = useGetPeriodFilter();
     const filteredTodos = useAppSelector((state) => selectTodosByPeriodFilter(state, periodFilter));
 
-    if (isLoadTodosLoading || isUpdateLoading) {
+    if (isLoadTodosLoading) {
         return <Skeleton />;
     }
 
@@ -40,6 +40,13 @@ export default function TodoList(): JSX.Element {
 
     return (
         <>
+            {isUpdateLoading && (
+                <>
+                    <Skeleton />
+                    <Spacing sm={32} />
+                </>
+            )}
+
             {!!completedTodos.length && (
                 <>
                     <ClearCompletedTodosButton

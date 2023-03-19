@@ -142,7 +142,7 @@ export const useDeleteTodo: TUseDeleteTodo = (todoId) => {
         dispatch,
         queryResult,
     } = useApiAction({
-        method: 'post',
+        method: 'delete',
         todoId,
     });
 

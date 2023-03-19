@@ -177,10 +177,10 @@ export default (app) => {
             return;
         }
 
-        if (Array.isArray(req.body.todos) && !req.body.todos.length) {
+        if (!Array.isArray(req.body.todos)) {
             // NOTE: Bad request
             res.statusCode = 400;
-            res.send(getServerError('Please send a not empty array of todos to update todos data'));
+            res.send(getServerError('Please send an array of todos to update todos data'));
 
             return;
         }

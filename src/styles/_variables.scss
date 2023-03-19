@@ -20,12 +20,6 @@
     --text-color: var(--black-color);
     --text-secondary: var(--primary-color-dark);
 
-    // screenSizes
-    // NOTE: should be synchronized with constants/screenSizes.ts
-    --sm: 767px;
-    --md: 1023px;
-    --lg: 1439px;
-
     // animation
     --base-transition-duration: 225ms;
 }

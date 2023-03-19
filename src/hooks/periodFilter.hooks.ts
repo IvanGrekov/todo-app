@@ -1,6 +1,6 @@
 import { useSearchParams } from 'react-router-dom';
 
-import { DEFAULT_PERIOD_FILTER_VALUE } from 'components/period-filter/constants';
+import { DEFAULT_PERIOD_FILTER_VALUE } from 'components/period-filters/constants';
 import { ESearchParams } from 'models/router';
 
 export const useGetPeriodFilter = (): string => {

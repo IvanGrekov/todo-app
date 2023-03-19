@@ -1,6 +1,6 @@
-@import './normalize';
-@import './reset';
-@import './variables';
+@import 'normalize';
+@import 'reset';
+@import 'variables';
 
 body {
     min-height: 100vh;
@@ -12,3 +12,9 @@ body {
 code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
+
+// screenSizes
+// NOTE: should be synchronized with constants/screenSizes.ts
+$sm: 767px;
+$md: 1023px;
+$lg: 1439px;

@@ -17,50 +17,121 @@
 
     &--h1 {
         font-size: 5rem;
+
+        @media (max-width: 1023px) {
+            font-size: 4rem;
+        }
+
+        @media (max-width: 767px) {
+            font-size: 3.5rem;
+        }
     }
 
     &--h2 {
         font-size: 3.75rem;
+
+        @media (max-width: 1023px) {
+            font-size: 3.25rem;
+        }
+
+        @media (max-width: 767px) {
+            font-size: 2.75rem;
+        }
     }
 
     &--h3 {
         font-size: 2.5rem;
+
+        @media (max-width: 1023px) {
+            font-size: 2.25rem;
+        }
+
+        @media (max-width: 767px) {
+            font-size: 2rem;
+        }
     }
 
     &--h4 {
         font-size: 2.25rem;
+
+        @media (max-width: 1023px) {
+            font-size: 2rem;
+        }
+
+        @media (max-width: 767px) {
+            font-size: 1.75rem;
+        }
     }
 
     &--h5 {
         font-size: 1.875rem;
+
+        @media (max-width: 1023px) {
+            font-size: 1.75rem;
+        }
+
+        @media (max-width: 767px) {
+            font-size: 1.5rem;
+        }
     }
 
     &--h6 {
         font-size: 1.625rem;
+
+        @media (max-width: 1023px) {
+            font-size: 1.5rem;
+        }
     }
 
     &--subtitle1 {
         font-size: 1.4375rem;
+
+        @media (max-width: 1023px) {
+            font-size: 1.25rem;
+        }
     }
 
     &--subtitle2 {
         font-size: 1.25rem;
+
+        @media (max-width: 1023px) {
+            font-size: 1rem;
+        }
     }
 
     &--body1 {
         font-size: 1rem;
+
+        @media (max-width: 1023px) {
+            font-size: 0.875rem;
+        }
     }
 
     &--body2 {
         font-size: 0.875rem;
+
+        @media (max-width: 1023px) {
+            font-size: 0.75rem;
+        }
+
+        @media (max-width: 767px) {
+        }
     }
 
     &--caption {
         font-size: 0.75rem;
+
+        @media (max-width: 1023px) {
+            font-size: 0.625rem;
+        }
     }
 
     &--button {
         font-size: 1rem;
         text-transform: uppercase;
+
+        @media (max-width: 1023px) {
+            font-size: 0.875rem;
+        }
     }
 }

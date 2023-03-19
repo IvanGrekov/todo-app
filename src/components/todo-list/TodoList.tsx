@@ -43,7 +43,7 @@ export default function TodoList(): JSX.Element {
             {isUpdateLoading && (
                 <>
                     <Skeleton />
-                    <Spacing sm={32} />
+                    <Spacing sm={18} md={24} lg={32} />
                 </>
             )}
 
@@ -53,13 +53,13 @@ export default function TodoList(): JSX.Element {
                         completedTodos={completedTodos}
                         updateTodos={updateTodos}
                     />
-                    <Spacing sm={32} />
+                    <Spacing sm={24} lg={32} />
                 </>
             )}
 
             <ul className="todo-list">
-                {filteredTodos.map((todo: ITodo) => (
-                    <li key={todo.id}>
+                {filteredTodos.map((todo: ITodo, i) => (
+                    <li key={todo.id} style={{ zIndex: filteredTodos.length - i }}>
                         <TodoItem todo={todo} />
                     </li>
                 ))}

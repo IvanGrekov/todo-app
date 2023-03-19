@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 import ErrorBoundary from 'components/error-boundary';
 import Header from 'components/header';
 import NetworkErrors from 'components/network-errors';
-import PeriodFilter from 'components/period-filter';
+import PeriodFilters from 'components/period-filters';
 import Spacing from 'components/spacing';
 import TodoList from 'components/todo-list/TodoList';
 import { useNetworkErrors } from 'hooks/networkErrors.hooks';
@@ -22,9 +22,9 @@ export default function App(): JSX.Element {
                     <Provider store={store}>
                         <NetworkErrors />
                         <Header />
-                        <Spacing sm={40} xl={60} />
-                        <PeriodFilter />
-                        <Spacing sm={60} />
+                        <Spacing sm={40} md={50} xl={60} />
+                        <PeriodFilters />
+                        <Spacing sm={18} md={26} lg={38} />
                         <TodoList />
                     </Provider>
                 </NetworkErrorsContext.Provider>

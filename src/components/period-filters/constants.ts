@@ -1,4 +1,4 @@
-import { IPeriodFilter } from 'components/period-filter/types';
+import { IPeriodFilter } from 'components/period-filters/types';
 import { EPeriodOptions } from 'models/router';
 
 export const PERIOD_FILTER_ITEMS: Array<IPeriodFilter> = [

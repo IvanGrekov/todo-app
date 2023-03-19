@@ -11,6 +11,10 @@
     background: var(--white-color);
     transition: border var(--base-transition-duration);
 
+    @media (max-width: 767px) {
+        padding: 0.75rem 0.625rem;
+    }
+
     &--empty {
         color: var(--black-color-opacity);
     }

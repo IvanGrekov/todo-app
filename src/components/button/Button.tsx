@@ -59,14 +59,16 @@ export default function Button({
                 </span>
             ) : (
                 <>
-                    <Typography
-                        element="span"
-                        variant={textVariant}
-                        color={textColor}
-                        style={{ lineHeight: 1, textTransform: 'uppercase', fontWeight: 600 }}
-                    >
-                        {text}
-                    </Typography>
+                    {text && (
+                        <Typography
+                            element="span"
+                            variant={textVariant}
+                            color={textColor}
+                            style={{ lineHeight: 1, textTransform: 'uppercase', fontWeight: 600 }}
+                        >
+                            {text}
+                        </Typography>
+                    )}
 
                     {iconName && (
                         <span className="button__icon">

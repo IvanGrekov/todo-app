@@ -25,6 +25,11 @@
 
         border-radius: 1rem;
         background-color: var(--white-color);
+
+        @media (max-width: 767px) {
+            min-width: 18.75rem;
+            padding: 2rem 1.25rem;
+        }
     }
 
     &__loader {

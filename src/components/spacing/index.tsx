@@ -1,7 +1,7 @@
+import { getSpacingSize } from 'components/spacing/spacing.utils';
 import useWindowSize from 'hooks/windowSize.hooks';
-import { EScreenSizeNames } from 'models/types/screenSizes';
 
-interface ISpacingProps {
+export interface ISpacingProps {
     sm: number;
     md?: number;
     lg?: number;
@@ -15,24 +15,13 @@ export default function Spacing({
     xl = lg || md || sm,
 }: ISpacingProps): JSX.Element {
     const windowSize = useWindowSize();
-    let spacingSize;
-
-    switch (windowSize) {
-        case EScreenSizeNames.SM:
-            spacingSize = sm;
-            break;
-
-        case EScreenSizeNames.MD:
-            spacingSize = md;
-            break;
-
-        case EScreenSizeNames.LG:
-            spacingSize = lg;
-            break;
-
-        default:
-            spacingSize = xl;
-    }
+    const spacingSize = getSpacingSize({
+        windowSize,
+        sm,
+        md,
+        lg,
+        xl,
+    });
 
     return <div style={{ height: spacingSize }} />;
 }

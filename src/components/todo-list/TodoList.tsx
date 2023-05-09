@@ -4,6 +4,8 @@ import ClearCompletedTodosButton from 'components/clear-completed-todos-button';
 import Skeleton from 'components/skeleton';
 import Spacing from 'components/spacing';
 import TodoItem from 'components/todo-item';
+import Typography from 'components/typography';
+import { COLORS } from 'constants/colors';
 import { useGetPeriodFilter } from 'hooks/periodFilter.hooks';
 import { useAppSelector } from 'hooks/redux.hooks';
 import { useLoadTodos, useUpdateTodos } from 'hooks/todoApi.hooks';
@@ -37,6 +39,8 @@ export default function TodoList(): JSX.Element {
     }
 
     const completedTodos = getCompletedTodos(filteredTodos);
+    const uncompletedTodosLength = filteredTodos.length - completedTodos.length;
+    const uncompletedItemsWord = uncompletedTodosLength === 1 ? 'item' : 'items';
 
     return (
         <>
@@ -47,15 +51,21 @@ export default function TodoList(): JSX.Element {
                 </>
             )}
 
-            {!!completedTodos.length && (
-                <>
+            <div className="todo-list__header">
+                <Typography
+                    variant="subtitle2"
+                    style={{ fontWeight: 'bold', color: COLORS.black }}
+                >{`${uncompletedTodosLength} ${uncompletedItemsWord} left`}</Typography>
+
+                {!!completedTodos.length && (
                     <ClearCompletedTodosButton
                         completedTodos={completedTodos}
                         updateTodos={updateTodos}
                     />
-                    <Spacing sm={24} lg={32} />
-                </>
-            )}
+                )}
+            </div>
+
+            <Spacing sm={24} lg={32} />
 
             <ul className="todo-list">
                 {filteredTodos.map((todo: ITodo, i) => (

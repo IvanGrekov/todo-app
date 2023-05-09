@@ -22,7 +22,7 @@ export default function TodoItem({ todo }: ITodoItemProps): JSX.Element {
     const shouldShowDate = useShouldShowDate();
 
     const { title, isCompleted, date } = todo;
-    const titleColor = isCompleted ? COLORS['black-opacity'] : COLORS.black;
+    const titleColor = isCompleted ? COLORS.blackOpacity : COLORS.black;
     const dateObjectFormat = new Date(date);
 
     return (
@@ -40,7 +40,7 @@ export default function TodoItem({ todo }: ITodoItemProps): JSX.Element {
                     </Typography>
 
                     {shouldShowDate && (
-                        <Typography variant="body2" color={COLORS['black-opacity']}>
+                        <Typography variant="body2" color={COLORS.blackOpacity}>
                             {getUserReadableDate(dateObjectFormat)}
                         </Typography>
                     )}

@@ -4,6 +4,6 @@ export const COLORS = {
     primaryDark: 'rgb(53, 157, 242)',
     white: 'rgb(235, 239, 243)',
     black: 'rgba(0, 0, 0, 0.7)',
-    'black-opacity': 'rgba(0, 0, 0, 0.5)',
+    blackOpacity: 'rgba(0, 0, 0, 0.5)',
     red: 'rgba(171, 13, 13, 0.7)',
 };

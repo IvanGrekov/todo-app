@@ -72,7 +72,7 @@ export default function Input({
     }
 
     const labelValue = (!value ? placeholder : label) || placeholder;
-    const helperTextColor = isError ? COLORS.red : COLORS['black-opacity'];
+    const helperTextColor = isError ? COLORS.red : COLORS.blackOpacity;
 
     return (
         <div className={classNames('input__wrapper', { ['input__wrapper--error']: isError })}>

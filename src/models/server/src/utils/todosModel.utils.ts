@@ -1,0 +1,25 @@
+import { TTodos, TTodoId } from '../types';
+
+type TGetServerError = (message: string) => { error: { message: string } };
+
+export const getServerError: TGetServerError = (message) => ({
+    error: { message },
+});
+
+type TGenerateId = () => string;
+
+export const generateId: TGenerateId = () => {
+    return `${Math.random() * Math.random()}`.replace(/[0.]/g, '');
+};
+
+type TGenerateSringifiedDate = (date: string | Date) => string;
+
+export const generateSringifiedDate: TGenerateSringifiedDate = (date) => {
+    return new Date(date).toISOString();
+};
+
+type TGetTodoIndex = (todos: TTodos, id: TTodoId) => number;
+
+export const getTodoIndex: TGetTodoIndex = (todos, id) => {
+    return todos.findIndex((todo) => todo.id === id);
+};

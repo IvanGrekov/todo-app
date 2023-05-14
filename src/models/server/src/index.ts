@@ -2,33 +2,32 @@ import cors from 'cors';
 import * as dotenv from 'dotenv';
 import express from 'express';
 
-import { TODOS_APP_ENDPOINTS } from './constants.mjs';
-import todoEndpoints from './todo-endpoints.mjs';
+import { TODOS_APP_ENDPOINTS } from './constants';
+import todosRouter from './routes/todos';
 
 dotenv.config();
 console.clear();
 
-const PORT = process.env.PORT;
-const app = express();
+const PORT = process.env.PORT || 4001;
+const server = express();
 
-app.use(
+server.use(
     cors({
         // NOTE: not required
-        origin: 'http://localhost:4000',
+        origin: '*',
     }),
 );
 
-// NOTE: home address
-app.get('/', (_, res) => {
+server.get('/', (_, res) => {
     res.write('<h1>Hello, below the endpoints list</h1>');
     res.write('</br>');
     res.end(JSON.stringify(Object.values(TODOS_APP_ENDPOINTS)));
 });
 
-todoEndpoints(app);
+server.use(express.json(), todosRouter);
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     console.log(`Server is running, http://localhost:${PORT}`);
 });
 
-export default app;
+export default server;

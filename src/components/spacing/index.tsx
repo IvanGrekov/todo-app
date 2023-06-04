@@ -1,22 +1,18 @@
 import { getSpacingSize } from 'components/spacing/spacing.utils';
+import { ISpacingProps } from 'components/spacing/types';
 import useWindowSize from 'hooks/windowSize.hooks';
 
-export interface ISpacingProps {
-    sm: number;
-    md?: number;
-    lg?: number;
-    xl?: number;
-}
-
 export default function Spacing({
-    sm,
-    md = sm,
-    lg = md || sm,
-    xl = lg || md || sm,
+    xs,
+    sm = xs,
+    md = sm || xs,
+    lg = md || sm || xs,
+    xl = lg || md || sm || xs,
 }: ISpacingProps): JSX.Element {
     const windowSize = useWindowSize();
     const spacingSize = getSpacingSize({
         windowSize,
+        xs,
         sm,
         md,
         lg,

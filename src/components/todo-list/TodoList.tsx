@@ -1,6 +1,7 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useMemo } from 'react';
 
 import ClearCompletedTodosButton from 'components/clear-completed-todos-button';
+import MarkTodosAsCompletedButton from 'components/mark-todos-as-completed-button';
 import Skeleton from 'components/skeleton';
 import Spacing from 'components/spacing';
 import TodoItem from 'components/todo-item';
@@ -8,9 +9,9 @@ import Typography from 'components/typography';
 import { COLORS } from 'constants/colors';
 import { useGetPeriodFilter } from 'hooks/periodFilter.hooks';
 import { useAppSelector } from 'hooks/redux.hooks';
-import { useLoadTodos, useUpdateTodos } from 'hooks/todoApi.hooks';
+import { useLoadTodos, useUpdateTodos, usePatchTodos } from 'hooks/todoApi.hooks';
 import { ITodo } from 'models/types/todo';
-import { selectTodosByPeriodFilter, getCompletedTodos } from 'utils/todos.utils';
+import { selectTodosByPeriodFilter, getFilteredTodosByStatus } from 'utils/todos.utils';
 
 import 'components/todo-list/TodoList.styles.scss';
 
@@ -20,15 +21,20 @@ export default function TodoList(): JSX.Element {
     const { isLoading: isLoadTodosLoading, error: todosLoadingError } = useLoadTodos();
     const [updateTodos, { isLoading: isUpdateLoading, error: todosUpdatingError }] =
         useUpdateTodos();
+    const [patchTodos, { isLoading: isPatchLoading, error: todosPatchingError }] = usePatchTodos();
 
     const periodFilter = useGetPeriodFilter();
     const filteredTodos = useAppSelector((state) => selectTodosByPeriodFilter(state, periodFilter));
+    const { completedTodos, uncompletedTodos } = useMemo(
+        () => getFilteredTodosByStatus(filteredTodos),
+        [filteredTodos],
+    );
 
     if (isLoadTodosLoading) {
         return <Skeleton />;
     }
 
-    const isError = todosLoadingError || todosUpdatingError;
+    const isError = todosLoadingError || todosUpdatingError || todosPatchingError;
 
     if (isError || !filteredTodos.length) {
         return (
@@ -38,16 +44,16 @@ export default function TodoList(): JSX.Element {
         );
     }
 
-    const completedTodos = getCompletedTodos(filteredTodos);
+    const isLoading = isUpdateLoading || isPatchLoading;
     const uncompletedTodosLength = filteredTodos.length - completedTodos.length;
     const uncompletedItemsWord = uncompletedTodosLength === 1 ? 'item' : 'items';
 
     return (
         <>
-            {isUpdateLoading && (
+            {isLoading && (
                 <>
                     <Skeleton />
-                    <Spacing sm={18} md={24} lg={32} />
+                    <Spacing xs={18} md={24} lg={32} />
                 </>
             )}
 
@@ -57,15 +63,24 @@ export default function TodoList(): JSX.Element {
                     style={{ fontWeight: 'bold', color: COLORS.black }}
                 >{`${uncompletedTodosLength} ${uncompletedItemsWord} left`}</Typography>
 
-                {!!completedTodos.length && (
-                    <ClearCompletedTodosButton
-                        completedTodos={completedTodos}
-                        updateTodos={updateTodos}
-                    />
-                )}
+                <div className="todo-list__header-actions">
+                    {!!uncompletedTodos.length && (
+                        <MarkTodosAsCompletedButton
+                            uncompletedTodos={uncompletedTodos}
+                            patchTodos={patchTodos}
+                        />
+                    )}
+
+                    {!!completedTodos.length && (
+                        <ClearCompletedTodosButton
+                            completedTodos={completedTodos}
+                            updateTodos={updateTodos}
+                        />
+                    )}
+                </div>
             </div>
 
-            <Spacing sm={24} lg={32} />
+            <Spacing xs={24} lg={32} />
 
             <ul className="todo-list">
                 {filteredTodos.map((todo: ITodo, i) => (

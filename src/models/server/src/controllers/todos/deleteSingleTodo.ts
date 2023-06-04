@@ -1,12 +1,17 @@
 import todosModel from '../../services/todos-model';
 import { TController } from '../../types';
 
-const deleteSingleTodo: TController = (req, res) => {
-    const { todoId } = req.params;
-    const resultFromModel = todosModel.deleteTodo(todoId);
+const deleteSingleTodo: TController = async (req, res) => {
+    try {
+        const { todoId } = req.params;
+        const resultFromModel = await todosModel.deleteTodo(todoId);
 
-    res.statusCode = 200;
-    res.send(resultFromModel);
+        // NOTE: Success
+        res.statusCode = 200;
+        res.send(resultFromModel);
+    } catch {
+        res.sendStatus(500);
+    }
 };
 
 export default deleteSingleTodo;

@@ -3,8 +3,6 @@ import { useAppSelector } from 'hooks/redux.hooks';
 import { TTodos } from 'models/types/todo';
 import { selectRemainedTodos } from 'utils/todos.utils';
 
-import 'components/clear-completed-todos-button/ClearCompletedTodosButton.styles.scss';
-
 interface IClearCompletedTodosButtonProps {
     completedTodos: TTodos;
     updateTodos: (newTodos: { todos: TTodos }) => void;
@@ -20,9 +18,5 @@ export default function ClearCompletedTodosButton({
         updateTodos({ todos: remainedTodos });
     };
 
-    return (
-        <div className="clear-button__wrapper">
-            <Button text="Clear Completed" onClick={onClearButtonClick} />
-        </div>
-    );
+    return <Button text="Clear Completed" onClick={onClearButtonClick} />;
 }

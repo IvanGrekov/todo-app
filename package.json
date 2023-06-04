@@ -3,7 +3,8 @@
     "version": "0.1.0",
     "scripts": {
         "start:server": "cd ./src/models/server && tsc && node ./dist/index.js",
-        "start": "concurrently --kill-others \"npm run start:server\" \"PORT=4000 react-scripts start\"",
+        "start:app": "PORT=4000 react-scripts start",
+        "start": "concurrently --kill-others \"npm run start:server\" \"npm run start:app\"",
         "build": "react-scripts build",
         "eject": "react-scripts eject",
         "format": "prettier -w . --ignore-path .gitignore",

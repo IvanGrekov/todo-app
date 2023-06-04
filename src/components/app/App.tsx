@@ -22,9 +22,9 @@ export default function App(): JSX.Element {
                     <Provider store={store}>
                         <NetworkErrors />
                         <Header />
-                        <Spacing sm={40} md={50} xl={60} />
+                        <Spacing xs={40} md={50} xl={60} />
                         <PeriodFilters />
-                        <Spacing sm={18} md={26} lg={38} />
+                        <Spacing xs={24} md={26} lg={38} />
                         <TodoList />
                     </Provider>
                 </NetworkErrorsContext.Provider>

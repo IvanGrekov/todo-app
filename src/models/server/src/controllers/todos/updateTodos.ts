@@ -2,7 +2,7 @@ import todosModel from '../../services/todos-model';
 import { TController } from '../../types';
 import { sendIncorrectTodosFormatError, getServerError } from '../../utils/server.utils';
 
-const updateTodos: TController = (req, res) => {
+const updateTodos: TController = async (req, res) => {
     if (!req.body.todos) {
         sendIncorrectTodosFormatError(res, 'update');
 
@@ -17,10 +17,14 @@ const updateTodos: TController = (req, res) => {
         return;
     }
 
-    const resultFromModel = todosModel.replaceTodos(req.body.todos);
+    try {
+        const resultFromModel = await todosModel.replaceTodos(req.body.todos);
 
-    res.statusCode = 200;
-    res.send(resultFromModel);
+        res.statusCode = 200;
+        res.send(resultFromModel);
+    } catch {
+        res.sendStatus(500);
+    }
 };
 
 export default updateTodos;

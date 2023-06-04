@@ -19,6 +19,9 @@ export const todosSlice = createSlice({
         updateTodos: (state, action: PayloadAction<TTodos>) => {
             state.todos = sortTodos(action.payload);
         },
+        patchTodos: (state, action: PayloadAction<TTodos>) => {
+            state.todos = sortTodos(action.payload);
+        },
         createTodo: (state, action: PayloadAction<ITodo>) => {
             state.todos.push(action.payload);
         },
@@ -33,6 +36,6 @@ export const todosSlice = createSlice({
     },
 });
 
-export const { updateTodos, createTodo, deleteTodo, patchTodo } = todosSlice.actions;
+export const { updateTodos, patchTodos, createTodo, deleteTodo, patchTodo } = todosSlice.actions;
 
 export default todosSlice.reducer;

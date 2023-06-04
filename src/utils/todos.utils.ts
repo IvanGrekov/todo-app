@@ -75,6 +75,28 @@ export const selectRemainedTodos: TSelectUncompletedTodoIdsByPeriod = (state, de
     );
 };
 
-export const getCompletedTodos = (todos: TTodos): TTodos => {
-    return todos.filter(({ isCompleted }) => isCompleted);
+type getFilteredTodosByStatus = (todos: TTodos) => {
+    completedTodos: TTodos;
+    uncompletedTodos: TTodos;
+};
+
+export const getFilteredTodosByStatus: getFilteredTodosByStatus = (todos) => {
+    const completedTodos = [];
+    const uncompletedTodos = [];
+
+    for (const todo of todos) {
+        todo.isCompleted ? completedTodos.push(todo) : uncompletedTodos.push(todo);
+    }
+
+    return {
+        completedTodos,
+        uncompletedTodos,
+    };
+};
+
+export const prepareTodosForCompleting = (uncompletedTodos: TTodos): TTodos => {
+    return uncompletedTodos.map((todo) => ({
+        ...todo,
+        isCompleted: true,
+    }));
 };

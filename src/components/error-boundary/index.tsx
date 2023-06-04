@@ -29,7 +29,7 @@ export default class ErrorBoundary extends Component<IErrorBoundaryProps, IError
         if (hasError) {
             return (
                 <>
-                    <Spacing sm={60} xl={80} />
+                    <Spacing xs={60} xl={80} />
                     <EmptyState
                         isError={true}
                         text="Error occurred on the page. Try to reload the page"

@@ -8,6 +8,7 @@ import API from 'models/api';
 import type { AppDispatch } from 'models/store';
 import {
     updateTodos,
+    patchTodos,
     createTodo,
     deleteTodo,
     patchTodo,
@@ -178,6 +179,29 @@ export const useUpdateTodos: TUseUpdateTodos = () => {
     }, [data, dispatch]);
 
     return [updateTodosMutation, queryResult];
+};
+
+type TCallPatchTodos = (changingTodos: { todos: TTodos }) => void;
+type TUsePatchTodos = () => [TCallPatchTodos, IUseApiResult];
+
+export const usePatchTodos: TUsePatchTodos = () => {
+    const {
+        call: patchTodosMutation,
+        dispatch,
+        queryResult,
+    } = useApiAction({
+        method: 'patch',
+    });
+
+    const { data } = queryResult;
+
+    useEffect(() => {
+        if (data) {
+            dispatch(patchTodos(data));
+        }
+    }, [data, dispatch]);
+
+    return [patchTodosMutation, queryResult];
 };
 
 type TUsePatchTodo = (

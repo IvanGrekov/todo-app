@@ -1,11 +1,17 @@
 import todosModel from '../../services/todos-model';
 import { TController } from '../../types';
 
-const getSingleTodo: TController = (req, res) => {
-    const { todoId } = req.params;
-    const resultFromModel = todosModel.getSignleTodo(todoId);
+const getSingleTodo: TController = async (req, res) => {
+    try {
+        const { todoId } = req.params;
+        const resultFromModel = await todosModel.getSingleTodo(todoId);
 
-    res.send(resultFromModel);
+        // NOTE: Success
+        res.statusCode = 200;
+        res.send(resultFromModel);
+    } catch {
+        res.sendStatus(500);
+    }
 };
 
 export default getSingleTodo;

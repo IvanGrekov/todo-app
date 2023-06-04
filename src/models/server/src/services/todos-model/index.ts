@@ -1,4 +1,6 @@
-import { DEFAULT_TODOS } from '../../constants';
+import fs from 'fs';
+import path from 'path';
+
 import { ITodo, TTodos, TTodoId } from '../../types';
 import {
     getNotFoundTodoErrorMessage,
@@ -6,15 +8,45 @@ import {
 } from '../../utils/errorMessages.utils';
 import { generateId, getTodoIndex } from '../../utils/todosModel.utils';
 
-class TodosModel {
-    constructor(private todos: TTodos = DEFAULT_TODOS) {}
+const todosFilePath = path.resolve(__dirname, '../../../../../../todos.json');
 
-    public getTodos(): TTodos {
-        return this.todos;
+class TodosModel {
+    private getTodosData(): Promise<TTodos> {
+        return new Promise((resolve, reject) => {
+            fs.readFile(todosFilePath, (err: any, data: any) => {
+                if (err) {
+                    reject(err);
+                }
+
+                const todos = JSON.parse(data);
+                resolve(todos);
+            });
+        });
     }
 
-    public getSignleTodo(id: string): ITodo {
-        const todo = this.todos.find((todo) => todo.id === id);
+    private writeTodosData(newTodos: TTodos): Promise<any> {
+        return new Promise((resolve, reject) => {
+            const newTodosJSON = JSON.stringify(newTodos);
+
+            fs.writeFile(todosFilePath, newTodosJSON, (err) => {
+                if (err) {
+                    reject(err);
+                }
+
+                resolve('Todos updated');
+            });
+        });
+    }
+
+    public async getTodos(): Promise<TTodos> {
+        const todos = await this.getTodosData();
+
+        return todos;
+    }
+
+    public async getSingleTodo(id: string): Promise<ITodo> {
+        const todos = await this.getTodosData();
+        const todo = todos.find((todo) => todo.id === id);
 
         if (!todo) {
             throw new Error(getNotFoundTodoErrorMessage(id));
@@ -23,7 +55,7 @@ class TodosModel {
         return todo;
     }
 
-    public createTodo({ title, date, isCompleted }: ITodo): ITodo {
+    public async createTodo({ title, date, isCompleted }: ITodo): Promise<ITodo> {
         if (
             typeof title !== 'string' ||
             typeof date !== 'string' ||
@@ -38,27 +70,31 @@ class TodosModel {
             date,
             isCompleted,
         };
-
-        this.todos.push(newTodo);
+        const todos = [...(await this.getTodosData())];
+        todos.push(newTodo);
+        await this.writeTodosData(todos);
 
         return newTodo;
     }
 
-    public deleteTodo(id: TTodoId): ITodo {
-        const deletingTodoIndex = getTodoIndex(this.todos, id);
+    public async deleteTodo(id: TTodoId): Promise<ITodo> {
+        const todos = [...(await this.getTodosData())];
+        const deletingTodoIndex = getTodoIndex(todos, id);
 
         if (deletingTodoIndex === -1) {
             throw new Error(getNotFoundTodoErrorMessage(id));
         }
 
-        const [deletingTodo] = this.todos.splice(deletingTodoIndex, 1);
+        const [deletingTodo] = todos.splice(deletingTodoIndex, 1);
+        await this.writeTodosData(todos);
 
         return deletingTodo;
     }
 
-    public updateTodo(updatingTodo: ITodo): ITodo {
+    public async updateTodo(updatingTodo: ITodo): Promise<ITodo> {
         const { id, title, isCompleted, date } = updatingTodo;
-        const updatingTodoIndex = getTodoIndex(this.todos, id);
+        const todos = [...(await this.getTodosData())];
+        const updatingTodoIndex = getTodoIndex(todos, id);
 
         if (updatingTodoIndex === -1) {
             throw new Error(getNotFoundTodoErrorMessage(id));
@@ -72,18 +108,20 @@ class TodosModel {
             throw new Error(getIncorrectTodoTypeErrorMessage());
         }
 
-        this.todos[updatingTodoIndex] = {
+        todos[updatingTodoIndex] = {
             id,
             title,
             isCompleted,
             date,
         };
+        await this.writeTodosData(todos);
 
-        return this.todos[updatingTodoIndex];
+        return todos[updatingTodoIndex];
     }
 
-    public patchTodo({ id, title, date, isCompleted }: ITodo): ITodo {
-        const patchingTodoIndex = getTodoIndex(this.todos, id);
+    public async patchTodo({ id, title, date, isCompleted }: ITodo): Promise<ITodo> {
+        const todos = [...(await this.getTodosData())];
+        const patchingTodoIndex = getTodoIndex(todos, id);
 
         if (patchingTodoIndex === -1) {
             throw new Error(getNotFoundTodoErrorMessage(id));
@@ -101,24 +139,25 @@ class TodosModel {
             title: currentTitle,
             date: currentDate,
             isCompleted: currentIsCompleted,
-        } = this.todos[patchingTodoIndex];
+        } = todos[patchingTodoIndex];
 
         const truthTitle = title || currentTitle;
         const truthDate = date || currentDate;
         const truthIsCompleted =
             typeof isCompleted === 'boolean' ? isCompleted : currentIsCompleted;
 
-        this.todos[patchingTodoIndex] = {
+        todos[patchingTodoIndex] = {
             id,
             title: truthTitle,
             date: truthDate,
             isCompleted: truthIsCompleted,
         };
+        await this.writeTodosData(todos);
 
-        return this.todos[patchingTodoIndex];
+        return todos[patchingTodoIndex];
     }
 
-    public replaceTodos(newTodos: TTodos): TTodos {
+    public async replaceTodos(newTodos: TTodos): Promise<TTodos> {
         const truthNewTodos: TTodos = [];
 
         for (const newTodo of newTodos) {
@@ -136,9 +175,10 @@ class TodosModel {
             truthNewTodos.push(newTodo);
         }
 
-        this.todos = truthNewTodos;
+        await this.writeTodosData(truthNewTodos);
+        const todos = [...(await this.getTodosData())];
 
-        return this.todos;
+        return todos;
     }
 }
 

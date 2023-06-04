@@ -6,7 +6,7 @@ import {
     sendIncorrectTypeError,
 } from '../../utils/server.utils';
 
-const patchTodos: TController = (req, res) => {
+const patchTodos: TController = async (req, res) => {
     if (!req.body.todos) {
         sendIncorrectTodosFormatError(res, 'patch');
 
@@ -21,20 +21,24 @@ const patchTodos: TController = (req, res) => {
         return;
     }
 
-    for (const todo of req.body.todos) {
-        const { id } = todo;
+    try {
+        for (const todo of req.body.todos) {
+            const { id } = todo;
 
-        if (!id) {
-            sendIncorrectTypeError(res);
+            if (!id) {
+                sendIncorrectTypeError(res);
 
-            return;
+                return;
+            }
+
+            await todosModel.patchTodo({ id, ...todo });
         }
 
-        todosModel.patchTodo({ id, ...todo });
+        res.statusCode = 200;
+        res.send(await todosModel.getTodos());
+    } catch {
+        res.sendStatus(500);
     }
-
-    res.statusCode = 200;
-    res.send(todosModel.getTodos());
 };
 
 export default patchTodos;

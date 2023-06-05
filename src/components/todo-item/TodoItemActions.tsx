@@ -71,6 +71,7 @@ export default function TodoItemActions({
                 todo={todo}
                 isOpen={isDetailsModalOpen}
                 onClose={onCloseDetailsModal}
+                openPatchModal={onEditActionItemCLick}
             />
 
             <PatchTodoModal isOpen={isPatchTodoModalOpen} todo={todo} onClose={onClosePatchModal} />

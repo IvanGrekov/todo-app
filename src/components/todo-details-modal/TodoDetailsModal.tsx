@@ -12,12 +12,14 @@ import 'components/todo-details-modal/TodoDetailsModal.styles.scss';
 
 interface ITodoDetailsModalProps extends IModalBaseProps {
     todo: ITodo;
+    openPatchModal: () => void;
 }
 
 export default function TodoDetailsModal({
     isOpen,
     todo,
     onClose,
+    openPatchModal,
 }: ITodoDetailsModalProps): JSX.Element {
     const [isLoading, setIsLoading] = useState(false);
 
@@ -36,7 +38,8 @@ export default function TodoDetailsModal({
                 </div>
 
                 <ButtonGroup shouldAddTopSpacing={true}>
-                    <Button text="Cancel" onClick={onClose} />
+                    <Button text="Edit" onClick={openPatchModal} />
+                    <Button text="Cancel" variant="contained" onClick={onClose} />
                 </ButtonGroup>
             </div>
         </Modal>

@@ -12,9 +12,9 @@ export const generateId: TGenerateId = () => {
     return `${Math.random() * Math.random()}`.replace(/[0.]/g, '');
 };
 
-type TGenerateSringifiedDate = (date: string | Date) => string;
+type TgenerateStringifiedDate = (date: string | Date) => string;
 
-export const generateSringifiedDate: TGenerateSringifiedDate = (date) => {
+export const generateStringifiedDate: TgenerateStringifiedDate = (date) => {
     return new Date(date).toISOString();
 };
 

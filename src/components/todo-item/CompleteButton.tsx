@@ -6,12 +6,12 @@ import { COLORS } from 'constants/colors';
 import { usePatchTodo } from 'hooks/todoApi.hooks';
 import { ITodo } from 'models/types/todo';
 
-interface IPublishButtonProps {
+interface ICompleteButtonProps {
     todo: ITodo;
     setIsLoading: (value: boolean) => void;
 }
 
-export default function PublishButton({ todo, setIsLoading }: IPublishButtonProps): JSX.Element {
+export default function CompleteButton({ todo, setIsLoading }: ICompleteButtonProps): JSX.Element {
     const { id, isCompleted } = todo;
 
     const [patchTodo, { isLoading }] = usePatchTodo(id);

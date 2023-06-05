@@ -3,12 +3,9 @@ import { useState } from 'react';
 import classNames from 'classnames';
 
 import Skeleton from 'components/skeleton';
-import PublishButton from 'components/todo-item/PublishButton';
 import TodoItemActions from 'components/todo-item/TodoItemActions';
 import { useShouldShowDate } from 'components/todo-item/todoItem.hooks';
-import { getUserReadableDate } from 'components/todo-item/todoItem.utils';
-import Typography from 'components/typography';
-import { COLORS } from 'constants/colors';
+import TodoMainInfo from 'components/todo-main-info';
 import { ITodo } from 'models/types/todo';
 
 import 'components/todo-item/TodoItem.styles.scss';
@@ -19,33 +16,16 @@ interface ITodoItemProps {
 
 export default function TodoItem({ todo }: ITodoItemProps): JSX.Element {
     const [isLoading, setIsLoading] = useState(false);
-    const shouldShowDate = useShouldShowDate();
 
-    const { title, isCompleted, date } = todo;
-    const titleColor = isCompleted ? COLORS.blackOpacity : COLORS.black;
-    const dateObjectFormat = new Date(date);
+    const shouldShowDate = useShouldShowDate();
 
     return (
         <div
             className={classNames('todo-item', {
-                'todo-item--completed': isCompleted,
+                'todo-item--completed': todo.isCompleted,
             })}
         >
-            <div className="todo-item__main-info-wrapper">
-                <PublishButton todo={todo} setIsLoading={setIsLoading} />
-
-                <div className="todo-item__title-wrapper">
-                    <Typography variant="subtitle1" color={titleColor}>
-                        {title}
-                    </Typography>
-
-                    {shouldShowDate && (
-                        <Typography variant="body2" color={COLORS.blackOpacity}>
-                            {getUserReadableDate(dateObjectFormat)}
-                        </Typography>
-                    )}
-                </div>
-            </div>
+            <TodoMainInfo todo={todo} setIsLoading={setIsLoading} shouldShowDate={shouldShowDate} />
 
             <TodoItemActions todo={todo} setIsLoading={setIsLoading} />
 

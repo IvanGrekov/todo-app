@@ -26,7 +26,7 @@ class TodosModel {
 
     private writeTodosData(newTodos: TTodos): Promise<any> {
         return new Promise((resolve, reject) => {
-            const newTodosJSON = JSON.stringify(newTodos);
+            const newTodosJSON = JSON.stringify(newTodos, null, 4);
 
             fs.writeFile(todosFilePath, newTodosJSON, (err) => {
                 if (err) {
@@ -55,9 +55,10 @@ class TodosModel {
         return todo;
     }
 
-    public async createTodo({ title, date, isCompleted }: ITodo): Promise<ITodo> {
+    public async createTodo({ title, description, date, isCompleted }: ITodo): Promise<ITodo> {
         if (
             typeof title !== 'string' ||
+            typeof description !== 'string' ||
             typeof date !== 'string' ||
             typeof isCompleted !== 'boolean'
         ) {
@@ -67,6 +68,7 @@ class TodosModel {
         const newTodo = {
             id: generateId(),
             title,
+            description,
             date,
             isCompleted,
         };
@@ -92,7 +94,7 @@ class TodosModel {
     }
 
     public async updateTodo(updatingTodo: ITodo): Promise<ITodo> {
-        const { id, title, isCompleted, date } = updatingTodo;
+        const { id, title, description, isCompleted, date } = updatingTodo;
         const todos = [...(await this.getTodosData())];
         const updatingTodoIndex = getTodoIndex(todos, id);
 
@@ -102,6 +104,7 @@ class TodosModel {
 
         if (
             typeof title !== 'string' ||
+            typeof description !== 'string' ||
             typeof isCompleted !== 'boolean' ||
             typeof date !== 'string'
         ) {
@@ -111,6 +114,7 @@ class TodosModel {
         todos[updatingTodoIndex] = {
             id,
             title,
+            description,
             isCompleted,
             date,
         };
@@ -119,7 +123,7 @@ class TodosModel {
         return todos[updatingTodoIndex];
     }
 
-    public async patchTodo({ id, title, date, isCompleted }: ITodo): Promise<ITodo> {
+    public async patchTodo({ id, title, description, date, isCompleted }: ITodo): Promise<ITodo> {
         const todos = [...(await this.getTodosData())];
         const patchingTodoIndex = getTodoIndex(todos, id);
 
@@ -129,6 +133,7 @@ class TodosModel {
 
         if (
             typeof title !== 'string' &&
+            typeof description !== 'string' &&
             typeof date !== 'string' &&
             typeof isCompleted !== 'boolean'
         ) {
@@ -137,11 +142,13 @@ class TodosModel {
 
         const {
             title: currentTitle,
+            description: currentDescription,
             date: currentDate,
             isCompleted: currentIsCompleted,
         } = todos[patchingTodoIndex];
 
         const truthTitle = title || currentTitle;
+        const truthDescription = description || currentDescription;
         const truthDate = date || currentDate;
         const truthIsCompleted =
             typeof isCompleted === 'boolean' ? isCompleted : currentIsCompleted;
@@ -149,6 +156,7 @@ class TodosModel {
         todos[patchingTodoIndex] = {
             id,
             title: truthTitle,
+            description: truthDescription,
             date: truthDate,
             isCompleted: truthIsCompleted,
         };

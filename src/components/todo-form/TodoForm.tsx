@@ -64,8 +64,8 @@ export default function TodoForm({
         shouldReset && resetForm();
     }, [shouldReset, resetForm]);
 
-    const { title, date, isCompleted } = values;
-    const { title: titleError, date: dateError } = errors;
+    const { title, description, date, isCompleted } = values;
+    const { title: titleError, description: descriptionError, date: dateError } = errors;
 
     return (
         <form id={formId} onSubmit={handleSubmit} className="form">
@@ -81,6 +81,18 @@ export default function TodoForm({
                 isError={!!titleError}
                 helperText={titleError}
             />
+            <Input
+                value={description}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                type="text"
+                name="description"
+                id="add_todo-description-input"
+                placeholder="Enter Description"
+                label="Description"
+                isError={!!descriptionError}
+                helperText={descriptionError}
+            />
             {shouldShowDateField && (
                 <Input
                     value={date}
@@ -94,16 +106,18 @@ export default function TodoForm({
                     helperText={dateError}
                 />
             )}
-            <Input
-                checked={isCompleted}
-                onChange={handleChange}
-                setFieldValue={setFieldValue}
-                onBlur={handleBlur}
-                type="checkbox"
-                name="isCompleted"
-                id="add_todo-is_completed-input"
-                placeholder="Is Completed"
-            />
+            {defaultValues && (
+                <Input
+                    checked={isCompleted}
+                    onChange={handleChange}
+                    setFieldValue={setFieldValue}
+                    onBlur={handleBlur}
+                    type="checkbox"
+                    name="isCompleted"
+                    id="add_todo-is_completed-input"
+                    placeholder="Is Completed"
+                />
+            )}
         </form>
     );
 }

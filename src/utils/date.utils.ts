@@ -41,6 +41,6 @@ export const checkIfDateIsPast = (date: Date): boolean => {
     return date < todayMidNigth;
 };
 
-export const generateSringifiedDate = (date: string): string => {
+export const generateStringifiedDate = (date: string): string => {
     return new Date(date).toISOString();
 };

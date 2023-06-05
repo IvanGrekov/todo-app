@@ -1,6 +1,3 @@
-import moment from 'moment';
-
-import { DATE_USER_READABLE_FORMAT } from 'constants/date';
 import { checkIfTheSameDay } from 'utils/date.utils';
 
 export const getShouldShowDate = (date: Date): boolean => {
@@ -13,6 +10,3 @@ export const getShouldShowDate = (date: Date): boolean => {
 
     return !isTodayDate && !isTomorrowDate;
 };
-
-export const getUserReadableDate = (date: Date): string =>
-    moment(date).format(DATE_USER_READABLE_FORMAT);

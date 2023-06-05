@@ -1,11 +1,13 @@
-import AddIcon from 'components/icon/AddIcon';
-import CompleteIcon from 'components/icon/CompleteIcon';
-import EditIcon from 'components/icon/EditIcon';
-import EmptyDataIcon from 'components/icon/EmptyDataIcon';
-import ErrorIcon from 'components/icon/ErrorIcon';
-import IncompleteIcon from 'components/icon/IncompleteIcon';
-import MoreIcon from 'components/icon/MoreIcon';
-import RemoveIcon from 'components/icon/RemoveIcon';
+import { lazy } from 'react';
+
+const AddIcon = lazy(() => import('components/icon/AddIcon'));
+const CompleteIcon = lazy(() => import('components/icon/CompleteIcon'));
+const EditIcon = lazy(() => import('components/icon/EditIcon'));
+const EmptyDataIcon = lazy(() => import('components/icon/EmptyDataIcon'));
+const ErrorIcon = lazy(() => import('components/icon/ErrorIcon'));
+const IncompleteIcon = lazy(() => import('components/icon/IncompleteIcon'));
+const MoreIcon = lazy(() => import('components/icon/MoreIcon'));
+const RemoveIcon = lazy(() => import('components/icon/RemoveIcon'));
 import { EIconNames } from 'components/icon/types';
 
 export const ICON_CONFIG = {

@@ -3,7 +3,7 @@ import { checkIfTodoChanged } from 'components/patch-todo-modal/patchTodoModal.u
 import TodoModal from 'components/todo-modal';
 import { usePatchTodo } from 'hooks/todoApi.hooks';
 import { ITodo, TTodoFormFields } from 'models/types/todo';
-import { generateSringifiedDate } from 'utils/date.utils';
+import { generateStringifiedDate } from 'utils/date.utils';
 
 interface IPatchTodoModalProps extends IModalBaseProps {
     todo: ITodo;
@@ -19,7 +19,7 @@ export default function PatchTodoModal({
     const [patchTodo, { isLoading }] = usePatchTodo(todo.id, onClose);
 
     const onSubmit = (values: TTodoFormFields): void => {
-        const date = generateSringifiedDate(values.date);
+        const date = generateStringifiedDate(values.date);
         const patchingTodo = {
             ...todo,
             ...values,

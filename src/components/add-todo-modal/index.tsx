@@ -1,7 +1,7 @@
 import TodoModal from 'components/todo-modal';
 import { useCreateTodo } from 'hooks/todoApi.hooks';
 import { TTodoFormFields } from 'models/types/todo';
-import { generateSringifiedDate } from 'utils/date.utils';
+import { generateStringifiedDate } from 'utils/date.utils';
 
 interface IAddTodoModalProps {
     isOpen: boolean;
@@ -12,7 +12,7 @@ export default function AddTodoModal({ isOpen, onClose }: IAddTodoModalProps): J
     const [createTodo, { isLoading }] = useCreateTodo(onClose);
 
     const onSubmit = (values: TTodoFormFields): void => {
-        const date = generateSringifiedDate(values.date);
+        const date = generateStringifiedDate(values.date);
 
         createTodo({
             todo: {

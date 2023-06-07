@@ -64,7 +64,7 @@ export default function TodoForm({
         shouldReset && resetForm();
     }, [shouldReset, resetForm]);
 
-    const { title, description, date, isCompleted } = values;
+    const { title, description, date, completed } = values;
     const { title: titleError, description: descriptionError, date: dateError } = errors;
 
     return (
@@ -108,12 +108,12 @@ export default function TodoForm({
             )}
             {defaultValues && (
                 <Input
-                    checked={isCompleted}
+                    checked={completed}
                     onChange={handleChange}
                     setFieldValue={setFieldValue}
                     onBlur={handleBlur}
                     type="checkbox"
-                    name="isCompleted"
+                    name="completed"
                     id="add_todo-is_completed-input"
                     placeholder="Is Completed"
                 />

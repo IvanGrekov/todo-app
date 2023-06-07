@@ -1,192 +1,166 @@
-import fs from 'fs';
-import path from 'path';
-
 import { ITodo, TTodos, TTodoId } from '../../types';
-import {
-    getNotFoundTodoErrorMessage,
-    getIncorrectTodoTypeErrorMessage,
-} from '../../utils/errorMessages.utils';
-import { generateId, getTodoIndex } from '../../utils/todosModel.utils';
-
-const todosFilePath = path.resolve(__dirname, '../../../../../../todos.json');
+import { getIncorrectTodoTypeErrorMessage } from '../../utils/errorMessages.utils';
+import client from '../todos-db';
 
 class TodosModel {
-    private getTodosData(): Promise<TTodos> {
-        return new Promise((resolve, reject) => {
-            fs.readFile(todosFilePath, (err: any, data: any) => {
-                if (err) {
-                    reject(err);
-                }
-
-                const todos = JSON.parse(data);
-                resolve(todos);
-            });
-        });
-    }
-
-    private writeTodosData(newTodos: TTodos): Promise<any> {
-        return new Promise((resolve, reject) => {
-            const newTodosJSON = JSON.stringify(newTodos, null, 4);
-
-            fs.writeFile(todosFilePath, newTodosJSON, (err) => {
-                if (err) {
-                    reject(err);
-                }
-
-                resolve('Todos updated');
-            });
-        });
+    private async updateTodoQuery({
+        id,
+        title,
+        description,
+        date,
+        completed,
+    }: ITodo): Promise<void> {
+        await client.query(
+            `
+                UPDATE todos
+                SET title=$2, description=$3, completed=$4, date=$5
+                WHERE id=$1
+            `,
+            [id, title, description, completed, date],
+        );
     }
 
     public async getTodos(): Promise<TTodos> {
-        const todos = await this.getTodosData();
+        try {
+            const query = await client.query(`
+                SELECT *
+                FROM todos
+                ORDER BY created_at
+            `);
 
-        return todos;
-    }
-
-    public async getSingleTodo(id: string): Promise<ITodo> {
-        const todos = await this.getTodosData();
-        const todo = todos.find((todo) => todo.id === id);
-
-        if (!todo) {
-            throw new Error(getNotFoundTodoErrorMessage(id));
+            return query.rows;
+        } catch (error) {
+            console.error(error);
+            throw new Error(error);
         }
-
-        return todo;
     }
 
-    public async createTodo({ title, description, date, isCompleted }: ITodo): Promise<ITodo> {
+    public async getSingleTodo(id: TTodoId): Promise<ITodo> {
+        try {
+            const query = await client.query(
+                `
+                    SELECT *
+                    FROM todos
+                    WHERE id=$1
+                `,
+                [id],
+            );
+
+            return query.rows[0];
+        } catch (error) {
+            console.error(error);
+            throw new Error(error);
+        }
+    }
+
+    public async createTodo({ id, title, description, date, completed }: ITodo): Promise<void> {
         if (
             typeof title !== 'string' ||
             typeof description !== 'string' ||
             typeof date !== 'string' ||
-            typeof isCompleted !== 'boolean'
+            typeof completed !== 'boolean'
         ) {
             throw new Error(getIncorrectTodoTypeErrorMessage());
         }
 
-        const newTodo = {
-            id: generateId(),
-            title,
-            description,
-            date,
-            isCompleted,
-        };
-        const todos = [...(await this.getTodosData())];
-        todos.push(newTodo);
-        await this.writeTodosData(todos);
-
-        return newTodo;
+        try {
+            await client.query(
+                `
+                    INSERT INTO todos(id, title, description, date, completed)
+                    VALUES($1, $2, $3, $4, $5)
+                `,
+                [id, title, description, date, completed],
+            );
+        } catch (error) {
+            console.error(error);
+            throw new Error(error);
+        }
     }
 
-    public async deleteTodo(id: TTodoId): Promise<ITodo> {
-        const todos = [...(await this.getTodosData())];
-        const deletingTodoIndex = getTodoIndex(todos, id);
-
-        if (deletingTodoIndex === -1) {
-            throw new Error(getNotFoundTodoErrorMessage(id));
+    public async deleteTodo(id: TTodoId): Promise<void> {
+        try {
+            await client.query(
+                `
+                    DELETE FROM todos
+                    WHERE id=$1
+                `,
+                [id],
+            );
+        } catch (error) {
+            console.error(error);
+            throw new Error(error);
         }
-
-        const [deletingTodo] = todos.splice(deletingTodoIndex, 1);
-        await this.writeTodosData(todos);
-
-        return deletingTodo;
     }
 
-    public async updateTodo(updatingTodo: ITodo): Promise<ITodo> {
-        const { id, title, description, isCompleted, date } = updatingTodo;
-        const todos = [...(await this.getTodosData())];
-        const updatingTodoIndex = getTodoIndex(todos, id);
-
-        if (updatingTodoIndex === -1) {
-            throw new Error(getNotFoundTodoErrorMessage(id));
-        }
+    public async updateTodo(updatingTodo: ITodo): Promise<void> {
+        const { title, description, date, completed } = updatingTodo;
 
         if (
             typeof title !== 'string' ||
             typeof description !== 'string' ||
-            typeof isCompleted !== 'boolean' ||
+            typeof completed !== 'boolean' ||
             typeof date !== 'string'
         ) {
             throw new Error(getIncorrectTodoTypeErrorMessage());
         }
 
-        todos[updatingTodoIndex] = {
-            id,
-            title,
-            description,
-            isCompleted,
-            date,
-        };
-        await this.writeTodosData(todos);
-
-        return todos[updatingTodoIndex];
+        try {
+            await this.updateTodoQuery(updatingTodo);
+        } catch (error) {
+            console.error(error);
+            throw new Error(error);
+        }
     }
 
-    public async patchTodo({ id, title, description, date, isCompleted }: ITodo): Promise<ITodo> {
-        const todos = [...(await this.getTodosData())];
-        const patchingTodoIndex = getTodoIndex(todos, id);
-
-        if (patchingTodoIndex === -1) {
-            throw new Error(getNotFoundTodoErrorMessage(id));
-        }
+    public async patchTodo(patchingTodo: ITodo): Promise<void> {
+        const { title, description, date, completed } = patchingTodo;
 
         if (
             typeof title !== 'string' &&
             typeof description !== 'string' &&
             typeof date !== 'string' &&
-            typeof isCompleted !== 'boolean'
+            typeof completed !== 'boolean'
         ) {
             throw new Error(getIncorrectTodoTypeErrorMessage());
         }
 
-        const {
-            title: currentTitle,
-            description: currentDescription,
-            date: currentDate,
-            isCompleted: currentIsCompleted,
-        } = todos[patchingTodoIndex];
-
-        const truthTitle = title || currentTitle;
-        const truthDescription = description || currentDescription;
-        const truthDate = date || currentDate;
-        const truthIsCompleted =
-            typeof isCompleted === 'boolean' ? isCompleted : currentIsCompleted;
-
-        todos[patchingTodoIndex] = {
-            id,
-            title: truthTitle,
-            description: truthDescription,
-            date: truthDate,
-            isCompleted: truthIsCompleted,
-        };
-        await this.writeTodosData(todos);
-
-        return todos[patchingTodoIndex];
+        try {
+            await this.updateTodoQuery(patchingTodo);
+        } catch (error) {
+            console.error(error);
+            throw new Error(error);
+        }
     }
 
-    public async replaceTodos(newTodos: TTodos): Promise<TTodos> {
-        const truthNewTodos: TTodos = [];
+    public async replaceTodos(newTodos: TTodos): Promise<void> {
+        try {
+            await client.query('DELETE FROM todos');
 
-        for (const newTodo of newTodos) {
-            const { id, title, date, isCompleted } = newTodo;
+            for (const newTodo of newTodos) {
+                const { id, title, description, date, completed } = newTodo;
 
-            if (
-                !['string', 'number'].includes(typeof id) ||
-                typeof title !== 'string' ||
-                typeof date !== 'string' ||
-                typeof isCompleted !== 'boolean'
-            ) {
-                throw new Error(getIncorrectTodoTypeErrorMessage(id));
+                if (
+                    !['string', 'number'].includes(typeof id) ||
+                    typeof title !== 'string' ||
+                    typeof description !== 'string' ||
+                    typeof date !== 'string' ||
+                    typeof completed !== 'boolean'
+                ) {
+                    throw new Error(getIncorrectTodoTypeErrorMessage(id));
+                }
+
+                await client.query(
+                    `
+                        INSERT INTO todos(id, title, description, date, completed)
+                        VALUES($1, $2, $3, $4, $5)
+                    `,
+                    [id, title, description, date, completed],
+                );
             }
-
-            truthNewTodos.push(newTodo);
+        } catch (error) {
+            console.error(error);
+            throw new Error(error);
         }
-
-        await this.writeTodosData(truthNewTodos);
-        const todos = [...(await this.getTodosData())];
-
-        return todos;
     }
 }
 

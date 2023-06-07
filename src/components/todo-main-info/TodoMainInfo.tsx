@@ -18,9 +18,9 @@ export default function TodoMainInfo({
     setIsLoading,
     shouldShowDate = true,
 }: ITodoMainInfoProps): JSX.Element {
-    const { date, isCompleted, title } = todo;
+    const { date, completed, title } = todo;
     const dateObjectFormat = new Date(date);
-    const textColor = getTextColorByStatus(isCompleted);
+    const textColor = getTextColorByStatus(completed);
 
     return (
         <div className="todo-main-info">

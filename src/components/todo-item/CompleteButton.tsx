@@ -12,7 +12,7 @@ interface ICompleteButtonProps {
 }
 
 export default function CompleteButton({ todo, setIsLoading }: ICompleteButtonProps): JSX.Element {
-    const { id, isCompleted } = todo;
+    const { id, completed } = todo;
 
     const [patchTodo, { isLoading }] = usePatchTodo(id);
 
@@ -21,11 +21,11 @@ export default function CompleteButton({ todo, setIsLoading }: ICompleteButtonPr
     }, [setIsLoading, isLoading]);
 
     const changeTodoStatus = (): void => {
-        patchTodo({ todo: { ...todo, isCompleted: !isCompleted } });
+        patchTodo({ todo: { ...todo, completed: !completed } });
     };
 
-    const iconName = isCompleted ? EIconNames.COMPLETE : EIconNames.INCOMPLETE;
-    const title = isCompleted ? 'Incomplete' : 'Complete';
+    const iconName = completed ? EIconNames.COMPLETE : EIconNames.INCOMPLETE;
+    const title = completed ? 'Incomplete' : 'Complete';
 
     return (
         <IconButton

@@ -22,7 +22,7 @@ export default function TodoItem({ todo }: ITodoItemProps): JSX.Element {
     return (
         <div
             className={classNames('todo-item', {
-                'todo-item--completed': todo.isCompleted,
+                'todo-item--completed': todo.completed,
             })}
         >
             <TodoMainInfo todo={todo} setIsLoading={setIsLoading} shouldShowDate={shouldShowDate} />

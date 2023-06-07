@@ -44,7 +44,7 @@ export default function TodoModal({
 
     const formId = todo ? PATCH_FORM_ID : ADD_FORM_ID;
     const shouldShowDateField = todo
-        ? !checkIfDateIsPast(new Date(todo.date)) && !todo.isCompleted
+        ? !checkIfDateIsPast(new Date(todo.date)) && !todo.completed
         : true;
 
     return (

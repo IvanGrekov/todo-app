@@ -7,7 +7,7 @@ export interface ITodo {
     title: string;
     description: string;
     date: string;
-    isCompleted: boolean;
+    completed: boolean;
 }
 
 export type TTodos = ITodo[];

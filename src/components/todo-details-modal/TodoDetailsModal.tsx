@@ -23,8 +23,8 @@ export default function TodoDetailsModal({
 }: ITodoDetailsModalProps): JSX.Element {
     const [isLoading, setIsLoading] = useState(false);
 
-    const { isCompleted, description } = todo;
-    const textColor = getTextColorByStatus(isCompleted);
+    const { completed, description } = todo;
+    const textColor = getTextColorByStatus(completed);
 
     return (
         <Modal isOpen={isOpen} onClose={onClose} isLoading={isLoading}>

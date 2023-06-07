@@ -11,7 +11,8 @@ const patchSingleTodo: TController = async (req, res) => {
 
     try {
         const { todoId } = req.params;
-        const resultFromModel = await todosModel.patchTodo({ id: todoId, ...req.body.todo });
+        await todosModel.patchTodo({ id: todoId, ...req.body.todo });
+        const resultFromModel = await todosModel.getSingleTodo(todoId);
 
         // NOTE: Success
         res.statusCode = 200;

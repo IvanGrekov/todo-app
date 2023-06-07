@@ -18,7 +18,8 @@ const updateTodos: TController = async (req, res) => {
     }
 
     try {
-        const resultFromModel = await todosModel.replaceTodos(req.body.todos);
+        await todosModel.replaceTodos(req.body.todos);
+        const resultFromModel = await todosModel.getTodos();
 
         res.statusCode = 200;
         res.send(resultFromModel);

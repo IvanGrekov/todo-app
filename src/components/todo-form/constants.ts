@@ -23,11 +23,11 @@ export const TODO_FORM_SCHEMA = Yup.object().shape({
     date: Yup.date()
         .min(getCurrentDateForInput(), PAST_DATE_ERROR_TEXT)
         .required('Date is required'),
-    isCompleted: IS_COMPLETED_YUP_VALIDATION,
+    completed: IS_COMPLETED_YUP_VALIDATION,
 });
 
 export const TODO_FORM_SCHEMA_WITHOUT_DATA = Yup.object().shape({
     title: TITLE_YUP_VALIDATION,
     description: DESCRIPTION_YUP_VALIDATION,
-    isCompleted: IS_COMPLETED_YUP_VALIDATION,
+    completed: IS_COMPLETED_YUP_VALIDATION,
 });

@@ -4,11 +4,11 @@ import { TController } from '../../types';
 const deleteSingleTodo: TController = async (req, res) => {
     try {
         const { todoId } = req.params;
-        const resultFromModel = await todosModel.deleteTodo(todoId);
+        await todosModel.deleteTodo(todoId);
 
         // NOTE: Success
         res.statusCode = 200;
-        res.send(resultFromModel);
+        res.send(`Todo with id ${todoId} was deleted`);
     } catch {
         res.sendStatus(500);
     }

@@ -85,7 +85,7 @@ export const getFilteredTodosByStatus: getFilteredTodosByStatus = (todos) => {
     const uncompletedTodos = [];
 
     for (const todo of todos) {
-        todo.isCompleted ? completedTodos.push(todo) : uncompletedTodos.push(todo);
+        todo.completed ? completedTodos.push(todo) : uncompletedTodos.push(todo);
     }
 
     return {
@@ -97,6 +97,6 @@ export const getFilteredTodosByStatus: getFilteredTodosByStatus = (todos) => {
 export const prepareTodosForCompleting = (uncompletedTodos: TTodos): TTodos => {
     return uncompletedTodos.map((todo) => ({
         ...todo,
-        isCompleted: true,
+        completed: true,
     }));
 };

@@ -6,10 +6,10 @@ export const getServerError: TGetServerError = (message) => ({
     error: { message },
 });
 
-type TGenerateId = () => string;
+type TGenerateId = () => number;
 
 export const generateId: TGenerateId = () => {
-    return `${Math.random() * Math.random()}`.replace(/[0.]/g, '');
+    return +`${Math.random() * Math.random()}`.replace(/[0.]/g, '');
 };
 
 type TgenerateStringifiedDate = (date: string | Date) => string;

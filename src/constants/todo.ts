@@ -8,5 +8,5 @@ export const INITIAL_ADD_TODO_FORM_VALUES: TTodoFormFields = {
     title: '',
     description: '',
     date: getCurrentDateForInput(),
-    isCompleted: false,
+    completed: false,
 };

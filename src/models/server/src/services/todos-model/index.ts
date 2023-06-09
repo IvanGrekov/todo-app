@@ -20,6 +20,22 @@ class TodosModel {
         );
     }
 
+    private async insertTodoQuery({
+        id,
+        title,
+        description,
+        date,
+        completed,
+    }: ITodo): Promise<void> {
+        await client.query(
+            `
+                INSERT INTO todos(id, title, description, date, completed)
+                VALUES($1, $2, $3, $4, $5)
+            `,
+            [id, title, description, date, completed],
+        );
+    }
+
     public async getTodos(): Promise<TTodos> {
         try {
             const query = await client.query(`
@@ -64,13 +80,7 @@ class TodosModel {
         }
 
         try {
-            await client.query(
-                `
-                    INSERT INTO todos(id, title, description, date, completed)
-                    VALUES($1, $2, $3, $4, $5)
-                `,
-                [id, title, description, date, completed],
-            );
+            await this.insertTodoQuery({ id, title, description, date, completed });
         } catch (error) {
             console.error(error);
             throw new Error(error);
@@ -149,13 +159,7 @@ class TodosModel {
                     throw new Error(getIncorrectTodoTypeErrorMessage(id));
                 }
 
-                await client.query(
-                    `
-                        INSERT INTO todos(id, title, description, date, completed)
-                        VALUES($1, $2, $3, $4, $5)
-                    `,
-                    [id, title, description, date, completed],
-                );
+                await this.insertTodoQuery({ id, title, description, date, completed });
             }
         } catch (error) {
             console.error(error);

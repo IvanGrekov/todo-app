@@ -19,19 +19,26 @@ export const todosSlice = createSlice({
         updateTodos: (state, action: PayloadAction<TTodos>) => {
             state.todos = sortTodos(action.payload);
         },
+
         patchTodos: (state, action: PayloadAction<TTodos>) => {
             state.todos = sortTodos(action.payload);
         },
+
         createTodo: (state, action: PayloadAction<ITodo>) => {
-            state.todos.push(action.payload);
+            const currentTodos = [...state.todos];
+            currentTodos.push(action.payload);
+            state.todos = sortTodos(currentTodos);
         },
+
         deleteTodo: (state, action: PayloadAction<ITodo['id']>) => {
             state.todos = state.todos.filter(({ id }) => id !== action.payload);
         },
+
         patchTodo: (state, action: PayloadAction<ITodo>) => {
-            state.todos = state.todos.map((todo) =>
+            const currentTodos = state.todos.map((todo) =>
                 todo.id === action.payload.id ? action.payload : todo,
             );
+            state.todos = sortTodos(currentTodos);
         },
     },
 });

@@ -1,6 +1,8 @@
+import { Model } from 'sequelize';
+
 import { ITodo, TTodos, TTodoId } from '../../types';
 import { getIncorrectTodoTypeErrorMessage } from '../../utils/errorMessages.utils';
-import client from '../todos-db';
+import TodoModel from '../todos-db';
 
 class TodosModel {
     private async updateTodoQuery({
@@ -10,13 +12,13 @@ class TodosModel {
         date,
         completed,
     }: ITodo): Promise<void> {
-        await client.query(
-            `
-                UPDATE todos
-                SET title=$2, description=$3, completed=$4, date=$5
-                WHERE id=$1
-            `,
-            [id, title, description, completed, date],
+        await TodoModel.update(
+            { title, description, completed, date },
+            {
+                where: {
+                    id,
+                },
+            },
         );
     }
 
@@ -27,42 +29,33 @@ class TodosModel {
         date,
         completed,
     }: ITodo): Promise<void> {
-        await client.query(
-            `
-                INSERT INTO todos(id, title, description, date, completed)
-                VALUES($1, $2, $3, $4, $5)
-            `,
-            [id, title, description, date, completed],
-        );
+        await TodoModel.create({ id, title, description, date, completed });
     }
 
-    public async getTodos(): Promise<TTodos> {
+    public async getTodos(): Promise<Model<ITodo>[]> {
         try {
-            const query = await client.query(`
-                SELECT *
-                FROM todos
-                ORDER BY created_at
-            `);
+            const todos = await TodoModel.findAll();
 
-            return query.rows;
+            return todos;
         } catch (error) {
             console.error(error);
             throw new Error(error);
         }
     }
 
-    public async getSingleTodo(id: TTodoId): Promise<ITodo> {
+    public async getSingleTodo(id: TTodoId): Promise<Model<ITodo>> {
         try {
-            const query = await client.query(
-                `
-                    SELECT *
-                    FROM todos
-                    WHERE id=$1
-                `,
-                [id],
-            );
+            const todo = await TodoModel.findOne({
+                where: {
+                    id,
+                },
+            });
 
-            return query.rows[0];
+            if (!todo) {
+                throw new Error(`Todo with id ${id} not found`);
+            }
+
+            return todo;
         } catch (error) {
             console.error(error);
             throw new Error(error);
@@ -89,13 +82,11 @@ class TodosModel {
 
     public async deleteTodo(id: TTodoId): Promise<void> {
         try {
-            await client.query(
-                `
-                    DELETE FROM todos
-                    WHERE id=$1
-                `,
-                [id],
-            );
+            await TodoModel.destroy({
+                where: {
+                    id,
+                },
+            });
         } catch (error) {
             console.error(error);
             throw new Error(error);
@@ -144,7 +135,9 @@ class TodosModel {
 
     public async replaceTodos(newTodos: TTodos): Promise<void> {
         try {
-            await client.query('DELETE FROM todos');
+            await TodoModel.destroy({
+                where: {},
+            });
 
             for (const newTodo of newTodos) {
                 const { id, title, description, date, completed } = newTodo;

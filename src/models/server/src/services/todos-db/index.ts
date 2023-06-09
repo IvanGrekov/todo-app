@@ -1,13 +1,41 @@
-import { Client } from 'pg';
+import { Sequelize, DataTypes, Model } from 'sequelize';
 
-const client = new Client({
+import { ITodo } from '../../types';
+
+const sequelize = new Sequelize('postgres', 'postgres', 'Cosonic56', {
     host: 'localhost',
-    user: 'postgres',
-    password: 'Cosonic56',
+    dialect: 'postgres',
 });
 
-(async (): Promise<void> => {
-    await client.connect();
-})();
+const TodoModel = sequelize.define<Model<ITodo>>(
+    'Todo',
+    {
+        id: {
+            type: DataTypes.BIGINT,
+            primaryKey: true,
+        },
+        title: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        description: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        completed: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+        },
+        date: {
+            type: DataTypes.DATE,
+            allowNull: false,
+        },
+    },
+    {
+        tableName: 'todos',
+        createdAt: false,
+        updatedAt: false,
+    },
+);
 
-export default client;
+export default TodoModel;

@@ -1,10 +1,21 @@
-import { Model } from 'sequelize';
-
 import { ITodo, TTodos, TTodoId } from '../../types';
 import { getIncorrectTodoTypeErrorMessage } from '../../utils/errorMessages.utils';
 import TodoModel from '../todos-db';
 
 class TodosModel {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    private normalize(todo: any): ITodo {
+        const { id, title, description, date, completed } = todo;
+
+        return {
+            id,
+            title,
+            description,
+            date,
+            completed,
+        };
+    }
+
     private async updateTodoQuery({
         id,
         title,
@@ -32,30 +43,26 @@ class TodosModel {
         await TodoModel.create({ id, title, description, date, completed });
     }
 
-    public async getTodos(): Promise<Model<ITodo>[]> {
+    public async getTodos(): Promise<ITodo[]> {
         try {
             const todos = await TodoModel.findAll();
 
-            return todos;
+            return todos.map(this.normalize);
         } catch (error) {
             console.error(error);
             throw new Error(error);
         }
     }
 
-    public async getSingleTodo(id: TTodoId): Promise<Model<ITodo>> {
+    public async getSingleTodo(id: TTodoId): Promise<ITodo> {
         try {
-            const todo = await TodoModel.findOne({
-                where: {
-                    id,
-                },
-            });
+            const todo = await TodoModel.findByPk(id);
 
             if (!todo) {
                 throw new Error(`Todo with id ${id} not found`);
             }
 
-            return todo;
+            return this.normalize(todo);
         } catch (error) {
             console.error(error);
             throw new Error(error);

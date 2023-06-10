@@ -1,20 +1,16 @@
-import { useCallback, useState, useEffect, useContext } from 'react';
+import { useCallback, useState, useEffect, useContext, useMemo } from 'react';
 
 import { AxiosError } from 'axios';
 
 import { DEFAULT_NETWORK_ERRORS, MAX_NETWORK_ERRORS } from 'constants/networkErrors';
 import NetworkErrorsContext from 'models/contexts/networkErrors';
-import {
-    TNetworkErrors,
-    TNetworkErrorsContextValue,
-    TSetNewNetworkError,
-} from 'models/types/networkErrors';
+import { TNetworkErrorsContextValue, TSetNewNetworkError } from 'models/types/networkErrors';
 import { getDateForErrorLogger } from 'utils/date.utils';
 
 export type TUseNetworkErrors = () => TNetworkErrorsContextValue;
 
 export const useNetworkErrors: TUseNetworkErrors = () => {
-    const [networkErrors, setNetworkErrors] = useState<TNetworkErrors>(DEFAULT_NETWORK_ERRORS);
+    const [networkErrors, setNetworkErrors] = useState(DEFAULT_NETWORK_ERRORS);
 
     const setNewNetworkError = useCallback<TSetNewNetworkError>(({ message }) => {
         setNetworkErrors((prevNetworkErrors) => {
@@ -30,7 +26,10 @@ export const useNetworkErrors: TUseNetworkErrors = () => {
         });
     }, []);
 
-    return { networkErrors, setNewNetworkError, setNetworkErrors };
+    return useMemo(
+        () => ({ networkErrors, setNewNetworkError, setNetworkErrors }),
+        [networkErrors, setNewNetworkError],
+    );
 };
 
 type TUseHandleNetworkError = (error: AxiosError | null) => void;

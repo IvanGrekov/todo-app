@@ -48,25 +48,6 @@ module.exports = {
         'no-use-before-define': 'off',
         '@typescript-eslint/no-use-before-define': ['off'],
         'react/react-in-jsx-scope': 'off',
-        'no-restricted-imports': [
-            'error',
-            {
-                patterns: [
-                    {
-                        group: ['wdx/*', '!wdx/dist'],
-                        message: 'Please import from wdx/dist instead.',
-                    },
-                    {
-                        group: ['shared/*', '!shared/dist'],
-                        message: 'Please import from shared/dist instead.',
-                    },
-                    {
-                        group: ['wdx/dist/widgets/empty-state'],
-                        message: 'Please use lazy loading instead.',
-                    },
-                ],
-            },
-        ],
         '@typescript-eslint/explicit-function-return-type': 'error',
         'linebreak-style': ['error', 'unix'],
         'import/order': [
@@ -83,21 +64,6 @@ module.exports = {
                         pattern: 'react*/**',
                         group: 'external',
                         position: 'before',
-                    },
-                    {
-                        pattern: '@apollo',
-                        group: 'external',
-                        position: 'after',
-                    },
-                    {
-                        pattern: '@apollo*/**',
-                        group: 'external',
-                        position: 'after',
-                    },
-                    {
-                        pattern: 'graphql/**',
-                        group: 'external',
-                        position: 'after',
                     },
                 ],
                 pathGroupsExcludedImportTypes: ['builtin'],

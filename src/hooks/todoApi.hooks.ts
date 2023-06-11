@@ -205,7 +205,7 @@ export const usePatchTodos: TUsePatchTodos = () => {
 };
 
 type TUsePatchTodo = (
-    todoId: ITodo['id'],
+    todoId?: ITodo['id'],
     onCompleted?: () => void,
 ) => [(patchingTodo: { todo: ITodo }) => void, IUseApiResult];
 

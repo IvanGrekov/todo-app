@@ -4,18 +4,26 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import { TTodos, ITodo } from 'models/types/todo';
 import { sortTodos } from 'utils/todos.utils';
 
+export type TSelectedTodo = ITodo | null;
+
 export interface ITodosState {
     todos: TTodos;
+    selectedTodo: TSelectedTodo;
 }
 
 const initialState: ITodosState = {
     todos: [],
+    selectedTodo: null,
 };
 
 export const todosSlice = createSlice({
     name: 'todos',
     initialState,
     reducers: {
+        setSelectedTodo: (state, action: PayloadAction<TSelectedTodo>) => {
+            state.selectedTodo = action.payload;
+        },
+
         updateTodos: (state, action: PayloadAction<TTodos>) => {
             state.todos = sortTodos(action.payload);
         },
@@ -43,6 +51,7 @@ export const todosSlice = createSlice({
     },
 });
 
-export const { updateTodos, patchTodos, createTodo, deleteTodo, patchTodo } = todosSlice.actions;
+export const { setSelectedTodo, updateTodos, patchTodos, createTodo, deleteTodo, patchTodo } =
+    todosSlice.actions;
 
 export default todosSlice.reducer;

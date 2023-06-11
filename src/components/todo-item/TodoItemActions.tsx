@@ -1,47 +1,46 @@
-import { useState, useEffect } from 'react';
+import { useContext, useEffect, memo } from 'react';
 
 import { EIconNames } from 'components/icon';
 import Menu, { MenuActionItem } from 'components/menu';
-import PatchTodoModal from 'components/patch-todo-modal';
-import TodoDetailsModal from 'components/todo-details-modal';
 import { COLORS } from 'constants/colors';
 import { useDeleteTodo } from 'hooks/todoApi.hooks';
+import TodoModalHandlersContext from 'models/contexts/todoModalHandlers';
 import { ITodo } from 'models/types/todo';
 
 const color = COLORS.black;
 
 interface ITodoItemActionsProps {
-    todo: ITodo;
+    id: ITodo['id'];
     setIsLoading: (value: boolean) => void;
+    setSelectedTodo: VoidFunction;
 }
 
-export default function TodoItemActions({
-    todo,
+function TodoItemActions({
+    id,
     setIsLoading,
+    setSelectedTodo,
 }: ITodoItemActionsProps): JSX.Element {
-    const [isDetailsModalOpen, setIsDetailsModalModalOpen] = useState(false);
-    const [isPatchTodoModalOpen, setIsPatchTodoModalOpen] = useState(false);
-
-    const [deleteTodo, { isLoading }] = useDeleteTodo(todo.id);
+    const context = useContext(TodoModalHandlersContext);
+    const [deleteTodo, { isLoading }] = useDeleteTodo(id);
 
     useEffect(() => {
         setIsLoading(isLoading);
     }, [setIsLoading, isLoading]);
 
-    const onDetailsActionItemCLick = (): void => {
-        setIsDetailsModalModalOpen(true);
+    if (!context) {
+        throw new Error('TodoModalHandlersContext is not provided');
+    }
+
+    const { toggleDetailsTodoModal, togglePatchTodoModal } = context;
+
+    const onDetailsActionClick = (): void => {
+        setSelectedTodo();
+        toggleDetailsTodoModal();
     };
 
-    const onCloseDetailsModal = (): void => {
-        setIsDetailsModalModalOpen(false);
-    };
-
-    const onEditActionItemCLick = (): void => {
-        setIsPatchTodoModalOpen((prev) => !prev);
-    };
-
-    const onClosePatchModal = (): void => {
-        setIsPatchTodoModalOpen(false);
+    const onEditActionClick = (): void => {
+        setSelectedTodo();
+        togglePatchTodoModal();
     };
 
     return (
@@ -51,13 +50,13 @@ export default function TodoItemActions({
                     text="Details"
                     iconName={EIconNames.MORE}
                     iconColor={color}
-                    onClick={onDetailsActionItemCLick}
+                    onClick={onDetailsActionClick}
                 />
                 <MenuActionItem
                     text="Edit"
                     iconName={EIconNames.EDIT}
                     iconColor={color}
-                    onClick={onEditActionItemCLick}
+                    onClick={onEditActionClick}
                 />
                 <MenuActionItem
                     text="Delete"
@@ -66,15 +65,8 @@ export default function TodoItemActions({
                     onClick={deleteTodo}
                 />
             </Menu>
-
-            <TodoDetailsModal
-                todo={todo}
-                isOpen={isDetailsModalOpen}
-                onClose={onCloseDetailsModal}
-                openPatchModal={onEditActionItemCLick}
-            />
-
-            <PatchTodoModal isOpen={isPatchTodoModalOpen} todo={todo} onClose={onClosePatchModal} />
         </>
     );
 }
+
+export default memo(TodoItemActions);

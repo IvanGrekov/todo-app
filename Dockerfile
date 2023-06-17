@@ -14,10 +14,10 @@ RUN npm install
 COPY . .
 
 # Env variables defining
-ENV SERVER_URL=http://localhost:4001
+ENV PORT=3000
 
 # Make the container listen on the specified port at runtime
-EXPOSE 3000
+EXPOSE $PORT
 
 # Start the app
 CMD [ "npm", "start" ]
